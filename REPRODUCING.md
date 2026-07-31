@@ -3,8 +3,8 @@
 ## 1. Environment
 
 ```bash
-git clone --recurse-submodules https://github.com/ANON-ORG/stoicheia
-cd Stoicheia
+git clone https://github.com/ANON-ORG/stoicheia
+cd stoicheia
 export CHARDIFF_DATA=/path/to/a/writable/data+checkpoints/directory
 source env.sh
 pip install -e .
