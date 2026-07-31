@@ -16,8 +16,7 @@
 # convention (see scripts/slurm/README.md point 6).
 CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
 export CHARDIFF_ROOT
-# Formal, logged run of the macronization probability-averaging ensemble
-# (previously written but never actually executed/logged).
+# Logged run of the macronization probability-averaging ensemble (meter.ensemble).
 set -euo pipefail
 MTR=$CHARDIFF_ROOT
 GCB_ROOT=$CHARDIFF_ROOT

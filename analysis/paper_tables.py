@@ -1,16 +1,16 @@
 """Regenerate every paper table from results already on disk. Reads only; safe to run
 at any time and shows partial state (n=) while jobs are still finishing.
 
-  python3 .scratch/paper_tables.py           # all three experiments
-  python3 .scratch/paper_tables.py parsing   # documentary | parsing | meter
+  python3 analysis/paper_tables.py           # all three experiments
+  python3 analysis/paper_tables.py parsing   # documentary | parsing | meter
 """
 from __future__ import annotations
 import collections, glob, json, os, re, sys
 import numpy as np
 
-GCB="$CHARDIFF_DATA"
-INSC="$CHARDIFF_DATA"
-REPO="$CHARDIFF_ROOT"
+GCB=os.path.expandvars("$CHARDIFF_DATA")
+INSC=os.path.expandvars("$CHARDIFF_DATA")
+REPO=os.path.expandvars("$CHARDIFF_ROOT")
 
 def _agg(v): return (np.mean(v), np.std(v), len(v)) if v else (float("nan"), 0.0, 0)
 

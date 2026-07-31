@@ -1,5 +1,5 @@
 """Build memmap shards from documentary papyri TRAIN segments (TM digit rule:
-3=test / 4=val never enter training data). Same plane format as GreekCharBERT
+3=test / 4=val never enter training data). Same plane format as Stoicheia
 shards; tier='iphi' deliberately (interface compat: the finetune's TierSpec
 filter and mix keys are reused unchanged), source='ddbdp'.
 

@@ -8,11 +8,11 @@ weighting, then summarized the same two ways as the existing tables:
   * recent: macro over lengths + sample-weighted micro, comparable to the
     uncontaminated table rows.
 
-  python3 .scratch/merge_ptp.py
+  python3 analysis/merge_ptp.py
 """
 import glob, json, os
 
-D = "$CHARDIFF_ROOT/ptp_out"
+D = os.path.expandvars("$CHARDIFF_ROOT/ptp_out")
 
 
 def merge(pattern):

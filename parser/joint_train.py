@@ -1,4 +1,4 @@
-"""Fine-tune ONE CharDiff-grc backbone into a full CoNLL-U predictor: lemma (edit-script),
+"""Fine-tune ONE Stoicheia backbone into a full CoNLL-U predictor: lemma (edit-script),
 UPOS, factored XPOS/morph, and biaffine HEAD+DEPREL — all heads share the pooled, scalar-mixed
 word representation and train jointly (multi-task; morph and syntax reinforce each other).
 

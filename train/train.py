@@ -1,4 +1,4 @@
-"""Config-driven pretraining loop for GreekCharBERT.
+"""Config-driven pretraining loop for Stoicheia.
 
 Single-process or torchrun/DDP. One JSON config freezes size, schedule, and budget.
 Two-phase curriculum: 3-tier stable phase -> gold-only anneal in the WSD decay window.

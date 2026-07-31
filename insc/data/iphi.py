@@ -26,7 +26,7 @@ ALIST = list(ALPHABET)
 A_IDX = {c: i for i, c in enumerate(ALIST)}
 MASK, UNK_BND, UNK_DIA, UNK_PUNCT = 24, 3, 48, 6
 
-# Leiden-markup line-break extraction from the `edition` field (used by insc/eval/phi_disagree.py
+# Leiden-markup line-break extraction from the `edition` field(also used by the restoration evals
 # too, duplicated here rather than imported to keep insc_data/ and insc_eval/ independent).
 _TAG_RE = re.compile(r"<[^>]+>")
 _ANGLE_RE = re.compile(r"&lt;|&gt;")

@@ -1,4 +1,4 @@
-"""HF-Hub-compatible model for CharDiff-grc-meter (macronization + metrical scansion).
+"""HF-Hub-compatible model for Stoicheia-meter (macronization + metrical scansion).
 
 Self-contained: vendors the same transformer primitives as modeling_char_bert.py, plus
 the fine-tune-only additions meter/model.py::MeterModel and meter/backbone.py::

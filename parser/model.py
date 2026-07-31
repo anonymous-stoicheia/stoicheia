@@ -1,4 +1,4 @@
-"""Arm wrapper: frozen CharDiff-grc backbone + a learned scalar mix, producing per-sentence
+"""Arm wrapper: frozen Stoicheia backbone + a learned scalar mix, producing per-sentence
 word vectors for the biaffine head. Gold head/deprel alignment lives here too (tokens with no
 Greek letters are skipped, exactly like the tagger pipeline skips them).
 

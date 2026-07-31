@@ -1,4 +1,4 @@
-"""HF-Hub-compatible config for CharDiff-grc (CharBertEncoder)."""
+"""HF-Hub-compatible config for Stoicheia (CharBertEncoder)."""
 from transformers import PretrainedConfig
 
 

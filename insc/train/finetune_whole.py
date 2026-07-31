@@ -53,8 +53,8 @@ def load_literary(n_records, min_len, max_len, seed=0):
     """Whole literary documents from the doc_clean pretraining corpus, in the same record
     shape as load_whole_full(). Literary text carries no lacunae (is_real_lacuna all False)
     and no provenance metadata (region/century UNK). Present purely as an anti-forgetting
-    / regularisation tier -- the shard-based run had ~11% of it (gold+silver) and beat the
-    whole-document runs, so its absence is one of the candidate explanations."""
+    / regularisation tier, mirroring the ~11% literary (gold+silver) replay share the
+    shard-based fine-tune recipe uses."""
     from data.normalize import Stats, normalize_record
     # Reads a PRE-EXTRACTED plain-JSONL sample (see raw/literary_sample.jsonl, built once
     # by sampling every 17th qualifying record across the whole doc_clean corpus so all
@@ -191,8 +191,7 @@ def force_unk_metadata(batch):
 @torch.no_grad()
 def dev_bits_per_char(model, batch, device, micro=32):
     """Mean bits/char over the dev batch, forwarded in row-chunks: one monolithic forward
-    of all 256 rows fits at T=4096 but OOMs at T=8192 (the v4 pilot died exactly here, at
-    the FIRST eval, after healthy training steps). Sum-CE aggregation keeps the result
+    of all 256 rows fits at T=4096 but OOMs at T=8192. Sum-CE aggregation keeps the result
     bit-identical to the single-forward version."""
     import torch.nn.functional as F
     n_rows = batch["input_ids"].shape[0]
@@ -458,24 +457,17 @@ def main():
             with open(metrics_f, "a") as f:
                 f.write(json.dumps(rec) + "\n")
 
-        # Eval-free periodic checkpoint (cfg "save_every", 0=off). The no-eval
-        # fixed-schedule folds disable the eval block entirely (its dev eval
-        # deadlocks under cluster load), which silently also disabled the ONLY
-        # save point -- a mid-run wedge then costs the whole run (t4v5 froze at
-        # step 5700/6000 and had nothing newer than step 3240 to resume from).
-        # Rank-0-only, no collective: the other ranks simply block in the next
-        # allreduce until rank 0 rejoins, well inside the NCCL timeout.
+        # Eval-free periodic checkpoint (cfg "save_every", 0=off), for runs that
+        # disable the dev-eval block: without it such a run's only checkpoint is
+        # final.pt, so any interruption costs the entire run.
         save_every = int(cfg.get("save_every", 0) or 0)
         if save_every and step > step0 and step % save_every == 0 \
                 and step % eval_every != 0:
-            # ALL ranks enter this block. Rank 0 saves while the others park in a
-            # barrier -- mirroring the eval block, where saves have always worked
-            # with the other ranks held at a broadcast. The first version had
-            # rank 0 save alone while the others ran ahead into the next backward
-            # allreduce; that deadlocked at the FIRST save on every fold that
-            # reached one (t1v2 at step 1500 and t4v5 at 3500, repeatedly), while
-            # every fold without mid-run saves completed. Do not "optimize" the
-            # barrier away.
+            # ALL ranks enter this block: rank 0 saves while the others park in
+            # a barrier. A rank-0-only save with the other ranks free to run into
+            # the next backward allreduce can deadlock on shared filesystems; the
+            # barrier mirrors the eval block's (working) synchronization. Do not
+            # remove it.
             if rank == 0:
                 save_ckpt(dict(model=(model.module if is_ddp else model).state_dict(),
                                opt=opt.state_dict(), step=step + 1, cfg=cfg), ckpt)
@@ -486,18 +478,12 @@ def main():
 
         if step > step0 and step % eval_every == 0:
             if rank == 0:
-                # Rank 0 checkpoints + evaluates alone while every other rank waits at
-                # the broadcast below. If this block overruns, the others hit the NCCL
-                # watchdog and SIGABRT, killing the job (seen on t0v1 step 750, t1v2
-                # 1250, t2v3 2750 -- always the eval step after the last DEV line).
-                # ROOT CAUSE is the ~5GB save_ckpt write to the shared filesystem, not
-                # the CER decode: under FS contention that write can exceed the watchdog.
-                # DO NOT guard this with signal.alarm(): SIGALRM interrupts the write
-                # syscall and torch.save dies with EINTR ("open file failed with
-                # strerror: Interrupted system call"), turning slow-but-fine into a hard
-                # failure. That was tried and reverted. The tolerance lives in the NCCL
-                # process-group timeout instead (train/train.py::ddp_setup).
-                # try/except stays: a genuinely failing eval should not kill training.
+                # Rank 0 checkpoints + evaluates alone while every other rank waits
+                # at the broadcast below; the NCCL process-group timeout
+                # (train/train.py::ddp_setup) bounds how long they will wait. Do not
+                # guard this block with signal.alarm(): SIGALRM interrupts the
+                # checkpoint write syscall and torch.save fails with EINTR. The
+                # try/except keeps a failing eval from killing training.
                 try:
                     core = model.module if is_ddp else model
                     save_ckpt(dict(model=core.state_dict(), opt=opt.state_dict(),
@@ -513,21 +499,13 @@ def main():
                     print("  DEV " + json.dumps(m), flush=True)
                     with open(out / "eval.jsonl", "a") as f:
                         f.write(json.dumps(m) + "\n")
-                    # Schedule + best.pt are driven by bits_per_char, NOT dev CER. Greedy span
-                    # CER over a finite fixture has ~0.007 sd run-to-run, which swamps
-                    # stall_eps=0.002: driving the stall detector with it fired annealing
-                    # 2-3k steps early on every fold of the v2 campaign (8/10 early-stopped
-                    # at ~3.5k steps vs the bpc-driven baseline's 5750) and left every model
-                    # undertrained. bpc is smooth and monotone; dev CER stays logged every
-                    # eval as the realistic-task read-out.
-                    # TWO SEPARABLE DECISIONS, deliberately using different signals:
-                    #  * stall/anneal is driven by bits_per_char -- smooth and monotone, so the
-                    #    detector is not fooled by metric noise (greedy CER has ~0.004 sd and
-                    #    fired annealing 2-3k steps early across the whole v2 campaign).
-                    #  * best.pt is selected on dev CER -- the TARGET metric. bpc and CER
-                    #    decorrelate late in training (r~0.82): bpc bottoms out and starts
-                    #    rising while CER is still improving, so selecting the checkpoint on bpc
-                    #    costs ~0.02 dev CER, about the size of a whole design iteration.
+                    # Two separable decisions, deliberately driven by different signals:
+                    #  * stall/anneal detection uses bits_per_char -- smooth and monotone,
+                    #    so the detector is not fooled by metric noise (greedy span CER
+                    #    has ~0.007 sd run-to-run, which swamps stall_eps=0.002).
+                    #  * best.pt is selected on dev CER -- the target metric. bpc and CER
+                    #    decorrelate late in training: bpc can bottom out and rise while
+                    #    CER is still improving.
                     dev_series.append((step, bpc))          # bpc drives stalled() below
                     cer_series.append((step, cer_m["cer"]))
                     if cer_m["cer"] <= min(c for _, c in cer_series):

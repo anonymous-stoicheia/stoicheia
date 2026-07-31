@@ -15,14 +15,14 @@
 # immune to that copy (see scripts/slurm/README.md point 6).
 CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
 export CHARDIFF_ROOT
-# 4-GPU single-node whole-document documentary finetune (torchrun) -- finetune_whole.py
+# 4-node (16-GPU) whole-document documentary finetune (torchrun) -- finetune_whole.py
 # already has full DDP support (ddp_setup()/DDP wrap, same pattern as finetune_v2.py), this
-# just launches it under torchrun instead of plain python. attn=sdpa in the configs
-# (switched from flex after a flex_attention/compile OOM: the compiled block-sparse kernel
-# wasn't engaging and fell back to a memory-exploding dense attention computation).
-# Usage: sbatch scripts/slurm/insc_finetune_whole_multi.sbatch <config>
+# just launches it under torchrun instead of plain python. Use attn=sdpa in the configs
+# (the compiled flex_attention block-sparse kernel can fall back to a memory-exploding
+# dense computation at these sequence lengths).
+# Usage: sbatch scripts/slurm/insc_finetune_whole_4node.sbatch <config>
 set -euo pipefail
-CONFIG="${1:?usage: sbatch scripts/slurm/insc_finetune_whole_multi.sbatch <config>}"
+CONFIG="${1:?usage: sbatch scripts/slurm/insc_finetune_whole_4node.sbatch <config>}"
 INS_ROOT=$CHARDIFF_ROOT
 
 source "$INS_ROOT/env.sh"

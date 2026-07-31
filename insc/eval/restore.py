@@ -1,4 +1,4 @@
-"""Ithaca-protocol restoration eval for the flat GreekCharBERT/CharDiff torso.
+"""Ithaca-protocol restoration eval for the flat Stoicheia/Stoicheia torso.
 
 Beam-20 non-sequential iterative mask-predict (port of grc-encoder's faithful Ithaca
 beam): mask one contiguous span of length L in a test/val segment; each round, forward

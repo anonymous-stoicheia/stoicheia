@@ -1,4 +1,4 @@
-"""Fine-tune CharDiff-grc into a macronizer + metrical scanner.
+"""Fine-tune Stoicheia into a macronizer + metrical scanner.
 
 Single-process or torchrun/DDP (data-parallel over packed rows; every rank holds the
 data and takes a disjoint slice of rows each epoch).

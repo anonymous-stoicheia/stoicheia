@@ -1,4 +1,4 @@
-"""GreekCharBERT: flat character-level masked-diffusion encoder.
+"""Stoicheia: flat character-level masked-diffusion encoder.
 
 Reads scriptio continua (24-letter minimal Greek alphabet, ς->σ, no accents) plus four
 parallel per-character channels (word-boundary, diacritics, capitalization, punctuation),

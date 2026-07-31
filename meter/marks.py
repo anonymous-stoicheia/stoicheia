@@ -1,4 +1,4 @@
-"""Project macron / scansion annotations onto CharDiff-grc's letter planes.
+"""Project macron / scansion annotations onto Stoicheia's letter planes.
 
 The backbone codec (data/normalize.py) turns text into per-LETTER planes: every Greek
 letter is one position; spaces, punctuation and editorial marks are folded into the
@@ -15,7 +15,7 @@ character-kind LUT the codec uses, counting letters exactly as normalize_record 
 count them on the stripped text — projection is alignment-exact by construction and
 asserted at encode time.
 
-Label conventions follow the old GreekMacronizer project (its Norma scorer and
+Label conventions follow an existing macronization project (its Norma scorer and
 scanner corpus are reused verbatim):
   macron: 0 = long, 1 = short
   scan:   0 = none, 1 = heavy syllable ends here, 2 = light ends, 3 = verse ends

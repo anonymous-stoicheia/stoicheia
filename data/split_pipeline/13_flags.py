@@ -24,7 +24,7 @@ import re
 import orjson
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CATALOG = "$CHARDIFF_ROOT/catalog.jsonl"
+CATALOG = os.path.expandvars("$CHARDIFF_ROOT/catalog.jsonl")
 
 BAD_CORPORA = {"Graeca miscellanea", "Ptolemaeus Latinus", "Versiones latinae",
                "Libri sacri / Biblia"}

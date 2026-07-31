@@ -1,4 +1,4 @@
-"""HF-Hub-compatible config for CharDiff-grc-tagger-parser (JointModel: tagger + biaffine parser).
+"""HF-Hub-compatible config for Stoicheia-tagger-parser (JointModel: tagger + biaffine parser).
 
 Self-contained (no import from configuration_char_bert.py): this ships as its own model repo,
 so it duplicates the small set of CharBertEncoder architecture fields it needs rather than
@@ -12,7 +12,7 @@ class CharBertJointConfig(PretrainedConfig):
 
     def __init__(
         self,
-        # --- CharBertEncoder backbone architecture (fine-tuned from a CharDiff-grc checkpoint) ---
+        # --- CharBertEncoder backbone architecture (fine-tuned from a Stoicheia checkpoint) ---
         n_alpha: int = 24,
         mask_id: int = 24,
         blank_id: int = 25,

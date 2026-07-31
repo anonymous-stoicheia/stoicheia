@@ -1,9 +1,10 @@
-"""Contamination scan: which I.PHI val/test segments occur VERBATIM in the pretraining
-corpus? Searches the raw letter-id planes (accentless — catches matches regardless of
-diacritics/spacing/punctuation differences). Writes a JSON of contaminated (phi_id, seg)
-keys for eval-side exclusion.
+"""Contamination scan: which papyrus (DDbDP) val/test segments occur VERBATIM in the
+pretraining corpus? Same method as leak_scan.py (inscriptions): searches the raw
+letter-id planes (accentless — catches matches regardless of diacritics/spacing/
+punctuation differences). Writes a JSON of contaminated (tm_id, seg) keys for
+eval-side exclusion.
 
-  python insc_eval/leak_scan.py --split val --out $INS_DATA/contaminated_val.json
+  python insc/eval/pap_leak_scan.py --split val --out $INS_DATA/contaminated_pap_val.json
 """
 from __future__ import annotations
 

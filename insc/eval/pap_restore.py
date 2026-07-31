@@ -1,4 +1,5 @@
-"""PAPYRI (DDbDP) restoration eval — TM digit split (3=test/4=val); otherwise identical for the flat GreekCharBERT/CharDiff torso.
+"""PAPYRI (DDbDP) restoration eval — TM digit split (3=test/4=val); otherwise
+identical to restore.py (inscriptions).
 
 Beam-20 non-sequential iterative mask-predict (port of grc-encoder's faithful Ithaca
 beam): mask one contiguous span of length L in a test/val segment; each round, forward

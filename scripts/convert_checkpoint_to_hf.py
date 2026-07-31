@@ -1,16 +1,16 @@
-"""Convert a raw CharDiff-grc training checkpoint ({model, opt, step, cfg}) into a clean,
+"""Convert a raw Stoicheia training checkpoint ({model, opt, step, cfg}) into a clean,
 HF-Hub-ready model repo (config.json + model.safetensors + modeling/configuration/
 processing .py files + model card), dropping optimizer state and training-only config.
 
   python convert_checkpoint_to_hf.py --kind backbone \
       --ckpt $GCB_DATA/runs/gcb_doc_clean/best.pt \
-      --out hf_release/CharDiff-grc-doc_clean \
-      --name "CharDiff-grc (documentary-clean)" \
+      --out hf_release/Stoicheia-doc_clean \
+      --name "Stoicheia (documentary-clean)" \
       --metrics-json $GCB_DATA/runs/gcb_doc_clean/eval.jsonl
 
   python convert_checkpoint_to_hf.py --kind tagger_parser \
       --ckpt $SYN_DATA/runs/joint_docclean_f3_s0/best.pt \
-      --out hf_release/CharDiff-grc-tagger-parser \
+      --out hf_release/Stoicheia-tagger-parser \
       --vocab-json $SYN_DATA/runs/joint_docclean_f3_s0/vocab.json \
       --deprel-vocab $SYN_DATA/runs/joint_docclean_f3_s0/deprel_vocab.json
 """

@@ -1,6 +1,6 @@
 """Pack OGA sentences into char-arm model batches, token-aligned.
 
-char arm: tagger.dataset.encode_sentence (raw FORM encoding) -> CharDiff-grc (word-pooled).
+char arm: tagger.dataset.encode_sentence (raw FORM encoding) -> Stoicheia (word-pooled).
 Skips exactly the tokens tagger.dataset.encode_word() rejects (no Greek letters).
 
 NOTE: this release drops the lemma-arm packing helpers (LemmaVocabMap, tag_sentences,

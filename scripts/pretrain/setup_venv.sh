@@ -1,8 +1,7 @@
 #!/bin/bash
 # Build the self-contained CPU venv (data pipeline / unit tests) at $CHARDIFF_ROOT/.venv-cpu.
 # Requires `uv` on PATH. GPU-side python comes from the training container instead.
-# NOTE: this script lives at scripts/pretrain/setup_venv.sh (two levels below repo root) —
-# formerly GreekCharBERT's scripts/setup_venv.sh (one level below repo root).
+# NOTE: this script lives at scripts/pretrain/setup_venv.sh (two levels below repo root).
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 GCB_DATA=${GCB_DATA:?set GCB_DATA/CHARDIFF_DATA (source env.sh first)}

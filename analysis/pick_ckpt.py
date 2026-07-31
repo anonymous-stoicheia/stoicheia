@@ -6,11 +6,11 @@ be ~0.02 dev CER worse than the run's end state. Both best.pt and last.pt are le
 checkpoints; choosing between them on DEV CER is standard model selection (dev is exactly
 what selection is for) and costs no GPU, because every eval's dev CER is in the log.
 
-  python3 .scratch/pick_ckpt.py                # report
-  python3 .scratch/pick_ckpt.py --write        # write chosen_ckpt.txt into each run dir
+  python3 analysis/pick_ckpt.py                # report
+  python3 analysis/pick_ckpt.py --write        # write chosen_ckpt.txt into each run dir
 """
 import glob, json, os, re, sys
-I="$CHARDIFF_DATA/insc_data/runs"
+I=os.path.expandvars("$CHARDIFF_DATA/insc_data/runs")
 write="--write" in sys.argv
 print(f"{'run':<28}{'best.pt cer':>12}{'last.pt cer':>12}  choice")
 for d in sorted(glob.glob(f"{I}/whole_v*")):

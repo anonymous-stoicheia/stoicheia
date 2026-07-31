@@ -1,4 +1,4 @@
-"""Deep biaffine dependency parser (Dozat & Manning 2017) over a frozen CharDiff-grc
+"""Deep biaffine dependency parser (Dozat & Manning 2017) over a frozen Stoicheia
 encoder, combined via an ELMo-style learned scalar mix of all layers (same recipe the
 tagger used for XPOS/lemma: scalar_mix + light head, here applied to arc/label MLPs
 instead of tag heads).

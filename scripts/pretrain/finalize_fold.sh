@@ -3,7 +3,7 @@
 # redundant checkpoints (last.pt duplicates final.pt at completion; pre_anneal.pt only
 # matters for anneal re-runs). Never deletes final.pt / best.pt / eval.jsonl.
 #
-# Usage: scripts/finalize_fold.sh <fold 0-9> [--prune]
+# Usage: scripts/pretrain/finalize_fold.sh <fold 0-9> [--prune]
 set -euo pipefail
 FOLD=${1:?usage: finalize_fold.sh <fold 0-9> [--prune]}
 GCB_DATA=${GCB_DATA:?set GCB_DATA/CHARDIFF_DATA (source env.sh first)}

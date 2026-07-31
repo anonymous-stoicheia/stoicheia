@@ -1,4 +1,4 @@
-"""HF-Hub-compatible processor for CharDiff-grc: text <-> the model's four input planes.
+"""HF-Hub-compatible processor for Stoicheia: text <-> the model's four input planes.
 
 Wraps the reference normalization/denormalization logic (character classification,
 diacritic packing, word/sentence-boundary detection) into a single callable that

@@ -40,7 +40,7 @@ from data.normalize import ALPHABET
 from restore_strict import eval_ours, levenshtein, canon  # reused verbatim
 
 A_IDX = {c: i for i, c in enumerate(ALPHABET)}
-PAP_JSONL = "$AGD_DATA/data/papyri_clean.jsonl"
+PAP_JSONL = os.path.expandvars("$AGD_DATA/data/papyri_clean.jsonl")
 
 # codepoints that fold onto the 24-letter alphabet (mirrors data/normalize.py's
 # _EXTRA_BASE, kept local so this file has no hidden coupling beyond ALPHABET itself)

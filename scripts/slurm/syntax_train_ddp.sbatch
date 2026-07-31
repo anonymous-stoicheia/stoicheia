@@ -18,7 +18,7 @@
 CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
 export CHARDIFF_ROOT
 # Data-parallel biaffine parser fine-tune. Multi-node torchrun with c10d rendezvous on the
-# batch master (same recipe as GreekCharBERT pretraining). Override node count at submit:
+# batch master (same recipe as the pretraining loop). Override node count at submit:
 #   sbatch --nodes 1 scripts/slurm/syntax_train_ddp.sbatch configs/syntax/parser_char.json   # 4-GPU smoke
 #   sbatch          scripts/slurm/syntax_train_ddp.sbatch configs/syntax/parser_char.json    # 32-GPU
 set -euo pipefail

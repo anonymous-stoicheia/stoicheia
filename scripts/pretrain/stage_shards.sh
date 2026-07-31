@@ -7,7 +7,8 @@
 # Set GCB_DATA_ROOT to stage a different data root (e.g. $GCB_DATA/folds/fold_3 for the
 # 10-fold replicas); unset, it stages the flagship shards as before.
 SRC_ROOT="${GCB_DATA_ROOT:-$GCB_DATA}"
-LOCAL=${SNIC_TMP:-${TMPDIR:-/tmp}}
+# NODE_LOCAL_TMP: your cluster's per-job node-local scratch directory, if it has one
+LOCAL=${NODE_LOCAL_TMP:-${TMPDIR:-/tmp}}
 NEED_KB=20000000   # ~20 GB (shards are ~14 GB)
 AVAIL_KB=$(df -P "$LOCAL" 2>/dev/null | awk 'NR==2{print $4}')
 if [ -n "$AVAIL_KB" ] && [ "$AVAIL_KB" -gt "$NEED_KB" ]; then

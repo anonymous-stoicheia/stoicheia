@@ -1,7 +1,7 @@
-"""Fine-tune the GreekCharBERT torso on I.PHI inscriptions (diffusion objective, Ithaca-
+"""Fine-tune the Stoicheia torso on I.PHI inscriptions (diffusion objective, Ithaca-
 oriented masking: contiguous spans of 1-10 chars dominate). Config-driven, DDP/torchrun.
 
-Reuses GreekCharBERT modules wholesale (PYTHONPATH=$GCB_ROOT); this file only changes:
+Reuses Stoicheia modules wholesale (PYTHONPATH=$GCB_ROOT); this file only changes:
   - init from $INS_TORSO (weights only; fresh optimizer, fresh short schedule)
   - data mix: iphi shards + gold/silver replay (anti-forgetting)
   - noise mix: span-heavy, span lengths matched to the Ithaca eval (1-10)
@@ -28,7 +28,7 @@ INS_ROOT = Path(__file__).resolve().parents[1]
 
 class MixDataset(torch.utils.data.IterableDataset):
     """Packed batches from an explicit DataConfig; each (rank, worker) gets a disjoint
-    shard and its own RNG (same contract as GreekCharBERT's BatchDataset)."""
+    shard and its own RNG (same contract as Stoicheia's BatchDataset)."""
     def __init__(self, dcfg, ncfg, T, rows, seed, rank, world):
         super().__init__()
         self.dcfg, self.ncfg, self.T, self.rows = dcfg, ncfg, T, rows

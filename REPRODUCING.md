@@ -37,21 +37,21 @@ directly rather than expecting a copy in this repo:
 - **Norma** (macronization/scansion benchmark): already public on GitHub — see the
   citation in the paper's Data section.
 
-One dataset is newly released with this paper (the only genuine gap found during
-preparation — a tagger warmup corpus that lived only in an internal project tree):
+One dataset is newly released with this paper (a silver lemma warmup corpus for the
+tagger):
 ```python
 silver_lemma = load_dataset("ANON-ORG/Stoicheia-silver-lemma")
 ```
 
-The 10-fold decontamination split was built via MinHash-LSH near-duplicate clustering,
-a last-digit rule for papyri/inscriptions, and n-gram decontamination against the eval
-sets — but that clustering/splitting pipeline itself is not part of this release. What
-*is* included is the downstream consumer, `data/build_fold_shards.py`, which takes an
-already-split fold's `train.jsonl.zst` and builds the memmap shards the pretraining
-loader reads. In practice you don't need to rebuild the fold assignments from scratch:
-use the pretrained checkpoints directly (`MODEL_CARDS_INDEX.md`), or, if you need the
-exact per-fold train/val/test record-id assignments used in the paper, contact the
-authors rather than expecting to regenerate them bit-for-bit from this repo alone.
+The 10-fold decontamination split is built by the pipeline in `data/split_pipeline/`
+(MinHash-LSH near-duplicate clustering, a last-digit rule for papyri/inscriptions,
+and n-gram decontamination against the eval sets — see the last section of this file
+and `data/fold_manifests/SPLIT_DESIGN.md`). Its downstream consumer,
+`data/build_fold_shards.py`, takes a fold's `train.jsonl.zst` and builds the memmap
+shards the pretraining loader reads. In practice you don't need to rebuild the fold
+assignments from scratch: use the pretrained checkpoints directly
+(`MODEL_CARDS_INDEX.md`), and `data/fold_manifests/` records every fold's test-work
+assignments for verification.
 
 ## 3. Pretraining (the 11 backbones)
 
@@ -89,10 +89,10 @@ the full rotation is cheap):
 
 ```bash
 # test_digit/val_digit rotate together: (1,2), (2,3), ..., (9,0), (0,1)
-sbatch scripts/slurm/insc_finetune_fold.sbatch configs/insc/finetune_both_ft_docclean_t1v2.json 1 2
+sbatch scripts/slurm/insc_finetune_whole_4node.sbatch configs/insc/finetune_whole_v4_t1v2.json
 ```
 
-Each `configs/insc/finetune_both_ft_docclean_t*v*.json` pins its own `test_digit`/
+Each `configs/insc/finetune_whole_v4_t*v*.json` pins its own `test_digit`/
 `val_digit` fields; `insc/train/finetune_v2.py` reads them and sets
 `INSC_TEST_DIGIT`/`INSC_VAL_DIGIT` itself before any data loads, so the intended split
 holds even if you run the script directly instead of through
@@ -105,7 +105,8 @@ before `--make-samples`/`--ckpt` (defaults to the flagship 3/4 split otherwise).
 ## 5. Evaluation (reproducing the paper's tables)
 
 ```bash
-python -m insc.eval.restore_strict --run $CHARDIFF_DATA/runs/both_ft_docclean --split test
+python -m insc.eval.restore_strict --ckpt $CHARDIFF_DATA/insc_data/runs/whole_v4_t3v4/final.pt \
+    --samples insc/eval/frozen/strict_test_fold3_samples.json --out strict_v4.json
 python -m parser.joint_evaluate --run $CHARDIFF_DATA/parser_data/runs/joint_docclean_f3_s0 --split test
 python -m meter.predict --model $CHARDIFF_DATA/runs/meter_joint_docclean/best.pt --norma
 ```
@@ -132,3 +133,14 @@ documents the design; `fold_k_test_works.tsv.gz` lists every work in fold k's
 test bucket (group id, kind, source, record/char counts, author+title), so the
 "provably never seen" guarantee is checkable work-by-work without rebuilding
 anything.
+
+## External pieces the harnesses expect
+
+* Meter training data: `MACRONIZER_SRC` must point at a checkout of the
+  `ANON-ORG/Stoicheia-meter-silver` dataset (silver verse lines + scanner corpus);
+  the Norma benchmark itself comes from `ANON-ORG/norma`.
+* The Ithaca baseline harness (`insc/eval/ithaca_baseline.py`) expects DeepMind's
+  Ithaca repository cloned at `ithaca_upstream/` and its released checkpoint;
+  the Aeneas harness (`insc/eval/ptp_baseline.py`) expects DeepMind's
+  `predictingthepast` repository and its Greek checkpoint. Both are public
+  third-party releases and are not vendored here.

@@ -1,3 +1,4 @@
+"""Restoration eval on the DeepMind `predictingthepast` "recent" comparison sets.
 
 WHY THIS EXISTS: that paper's *recent* sets (`inscr_text_recent.jsonl`,
 `pap_text_ups.jsonl`) are documents edited AFTER the compared systems' training

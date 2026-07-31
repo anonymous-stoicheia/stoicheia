@@ -1,6 +1,6 @@
 """Build memmap shards from I.PHI TRAIN segments (val/test never enter training data).
 
-Same plane format as GreekCharBERT shards so MultiTierLoader can mix iphi with the
+Same plane format as Stoicheia shards so MultiTierLoader can mix iphi with the
 pretraining tiers transparently. tier='iphi', clean=1.0.
 
   python insc_data/build_shards.py --out $INS_DATA/shards/iphi_punct

@@ -1,4 +1,4 @@
-"""Encode the GreekMacronizer corpora into letter-plane npz stores.
+"""Encode the macron-data corpora into letter-plane npz stores.
 
   python -m meter.encode [--out $METER_DATA/encoded] [--src $MACRONIZER_SRC] [--norma-source hf]
 
@@ -85,8 +85,8 @@ def is_contaminated(letters: str, shingles, exact) -> bool:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--src", default=os.environ.get(
-        "MACRONIZER_SRC", "$MACRONIZER_SRC"))
+    ap.add_argument("--src", default=os.path.expandvars(os.environ.get(
+        "MACRONIZER_SRC", "$MACRONIZER_SRC")))
     ap.add_argument("--out", default=None)
     add_norma_source_arg(ap)
     a = ap.parse_args()

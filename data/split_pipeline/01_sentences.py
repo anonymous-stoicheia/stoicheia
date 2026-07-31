@@ -13,7 +13,7 @@ Outputs work/sentences/<tier>/shard_NNNN.parquet with columns:
 Zone rule (fixed across folds, Ithaca-compatible): PHI/TM number ending in
 3 -> PTEST, 4 -> PVAL, anything else -> TRAIN. Applied to source ddbdp/dclp in
 ANY tier and to all Inscriptions_2 records. ddbdp ids carry no TM; they are
-joined to TM via the original extraction files on /nobackup (99.97% coverage);
+joined to TM via the original extraction files (99.97% coverage);
 the remainder falls back to xxhash64(id) last digit (counted in stats).
 """
 import argparse
@@ -35,8 +35,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "raw")
 OUT = os.path.join(ROOT, "work", "sentences")
 
-DDBDP_JSONL = "$CHARDIFF_DATA/clean/ddbdp.jsonl"
-PAPYRI_TM_JSONL = "$CHARDIFF_DATA/data/papyri_clean.jsonl"
+DDBDP_JSONL = os.path.expandvars("$CHARDIFF_DATA/clean/ddbdp.jsonl")
+PAPYRI_TM_JSONL = os.path.expandvars("$CHARDIFF_DATA/data/papyri_clean.jsonl")
 INSCR_JSONL = os.path.join(RAW, "Inscriptions_2", "synthetic_editions_with_ithaca_text_fix.jsonl")
 INSCR_FIELDS = ["edition", "with_diacritics", "without_diacritics",
                 "synthetic", "synthetic_2", "ithaca_text"]

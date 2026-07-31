@@ -10,8 +10,8 @@ from __future__ import annotations
 import collections, glob, json, math, os, re, sys
 import numpy as np
 
-GCB="$CHARDIFF_DATA"
-REPO="$CHARDIFF_ROOT"
+GCB=os.path.expandvars("$CHARDIFF_DATA")
+REPO=os.path.expandvars("$CHARDIFF_ROOT")
 
 def _ttest_rel_p(d):
     """Two-sided paired t-test p-value without scipy (survival fn of |t| via a
@@ -108,7 +108,7 @@ def strict_ithaca():
     print("\nSTRICT vs ITHACA (top-1/top-20 exact-match, two-proportion z-test, n=3000 each side)")
     print("  (samples are IDENTICAL on both sides -- same frozen file -- so this unpaired")
     print("   test is conservative; a paired McNemar test would only be stronger)")
-    INSC="$CHARDIFF_DATA"
+    INSC=os.path.expandvars("$CHARDIFF_DATA")
     import collections
     def merge(pat):
         a=collections.defaultdict(lambda: dict(n=0,t1=0.0,t20=0.0))

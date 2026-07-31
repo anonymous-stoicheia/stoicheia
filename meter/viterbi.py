@@ -1,6 +1,6 @@
 """Meter-constrained decoding of the scan head (gated Viterbi).
 
-Vendored from the old GreekMacronizer project (scripts/scan_constraints.py grammar
+Vendored from an existing macronization project (scripts/scan_constraints.py grammar
 NFAs + scripts/viterbi_meter.py), adapted to per-LETTER probabilities. The scan head
 gives P(O/H/L/V) per letter; Viterbi finds the most probable labelling whose non-O
 sequence is a valid path through the meter's automaton (last syllable emits V,

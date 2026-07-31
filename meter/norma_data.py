@@ -6,7 +6,7 @@ Two sources:
       git-based copy: at time of writing it has 1378 macronize rows (614 test +
       764 dev) vs the git copy's 932 (both dev and test folded into one file,
       disambiguated by split_manifest.json), plus the same 614 syllabify test rows.
-  git -- a local checkout of the old GreekMacronizer project ($MACRONIZER_SRC),
+  git -- a local checkout of an existing macronization project ($MACRONIZER_SRC),
       kept for exact reproducibility of numbers reported before the HF migration.
 
 Either way, load_norma() returns the same shape: {"test": [...], "dev": [...]},
@@ -44,12 +44,12 @@ def _load_hf() -> dict:
 def load_norma(source: str = "hf", src: Path | None = None) -> dict:
     """source="hf" (default): pull the canonical release from the Hub, no local
     clone needed. source="git": read src/data/norma/{test.jsonl,split_manifest.json}
-    from a local GreekMacronizer checkout (src defaults to $MACRONIZER_SRC)."""
+    from a local macron-data checkout (src defaults to $MACRONIZER_SRC)."""
     if source == "hf":
         return _load_hf()
     if source == "git":
-        src = src or Path(os.environ.get(
-            "MACRONIZER_SRC", "$MACRONIZER_SRC"))
+        src = src or Path(os.path.expandvars(os.environ.get(
+            "MACRONIZER_SRC", "$MACRONIZER_SRC")))
         return _load_git(src)
     raise ValueError(f"unknown Norma source: {source!r} (expected 'hf' or 'git')")
 

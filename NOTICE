@@ -1,5 +1,5 @@
 Stoicheia
-Copyright 2026 Eric Cullhed
+Copyright 2026 Anonymous (under review)
 
 This product is licensed under the Apache License, Version 2.0 (see LICENSE).
 
@@ -14,8 +14,8 @@ from DeepMind:
 
 Ithaca (Assael, Sommerschield, Shillingford, Bordbar, Pavlopoulos, Chatzipanagiotou,
 Androutsopoulos, Prag & de Freitas, "Restoring and attributing ancient texts using deep
-neural networks", Nature 2022) is vendored here unmodified, purely as a reference baseline
-that this project's own inscription-restoration/attribution evaluation code (`insc/eval/`)
-compares against. No code from Ithaca has been copied into this repository's own source
-tree; it is pulled in only via the submodule reference. See the submodule's own LICENSE file
-for its complete terms.
+neural networks", Nature 2022) is used purely as a reference baseline that this project's
+own inscription-restoration evaluation code (`insc/eval/`) compares against. No code from
+Ithaca has been copied into this repository's source tree; the baseline harness expects a
+separately downloaded checkout (see `scripts/slurm/insc_ithaca_gpu.sbatch`), which retains
+its own LICENSE.

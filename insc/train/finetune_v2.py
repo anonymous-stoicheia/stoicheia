@@ -2,7 +2,7 @@
 schedule is decided by the PHI digit-4 dev set instead of a fixed step budget:
 
   warmup -> constant peak LR until dev masked-bits/char stalls (window/eps as in
-  GreekCharBERT pretraining) -> cosine decay over decay_len steps, with dev
+  Stoicheia pretraining) -> cosine decay over decay_len steps, with dev
   early-stop (patience evals without improvement) -> best.pt is the model of record.
 
 Dev signal: masked bits/char (eval.intrinsic.evaluate) on a fixed sample of digit-4

@@ -1,6 +1,6 @@
-"""HF-Hub-compatible config for CharDiff-grc-meter (macronization + metrical scansion).
+"""HF-Hub-compatible config for Stoicheia-meter (macronization + metrical scansion).
 
-Same backbone hyperparameters as CharBertConfig (this wraps a CharDiff-grc backbone
+Same backbone hyperparameters as CharBertConfig (this wraps a Stoicheia backbone
 fine-tuned with two extra per-letter heads), plus the two fields that change the
 model's *shape* (use_cap, scalar_mix) -- head_dropout/w_mac/w_scan/class weights are
 training-only and irrelevant to inference, so they aren't part of this config.

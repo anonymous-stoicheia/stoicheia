@@ -17,14 +17,14 @@
 # convention (see scripts/slurm/README.md point 6).
 CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
 export CHARDIFF_ROOT
-# Data-parallel biaffine parser fine-tune. Multi-node torchrun with c10d rendezvous on the
-# batch master (same recipe as GreekCharBERT pretraining). Override node count at submit:
-#   sbatch --nodes 1 scripts/slurm/syntax_train_ddp.sbatch configs/syntax/parser_char.json   # 4-GPU smoke
-#   sbatch          scripts/slurm/syntax_train_ddp.sbatch configs/syntax/parser_char.json    # 32-GPU
+# Data-parallel joint tagger+parser fine-tune. Multi-node torchrun with c10d rendezvous on
+# the batch master (same recipe as pretraining). Override node count at submit:
+#   sbatch --nodes 1 scripts/slurm/syntax_joint_ddp.sbatch configs/syntax/joint.json   # 4-GPU smoke
+#   sbatch          scripts/slurm/syntax_joint_ddp.sbatch configs/syntax/joint.json    # 32-GPU
 set -euo pipefail
 SYN_ROOT=$CHARDIFF_ROOT
 source "$SYN_ROOT/env.sh"
-CONFIG="${1:?usage: sbatch scripts/train_ddp.sbatch <config.json>}"
+CONFIG="${1:?usage: sbatch scripts/slurm/syntax_joint_ddp.sbatch <config.json>}"
 mkdir -p "$SYN_ROOT/logs"
 MASTER=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -1)
 export MASTER_ADDR=$MASTER MASTER_PORT=$((29000 + SLURM_JOB_ID % 1000))

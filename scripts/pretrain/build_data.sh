@@ -1,7 +1,7 @@
 #!/bin/bash
 # Reproducible data build: HuggingFace -> raw parquet/jsonl -> memmap shards.
 # Run once on a CPU (x86) node before training; training only reads the shards.
-#   scripts/build_data.sh [workers]
+#   scripts/pretrain/build_data.sh [workers]
 set -euo pipefail
 WORKERS=${1:-16}
 ROOT=$(cd "$(dirname "$0")/../.." && pwd)

@@ -1,5 +1,5 @@
 """
-eval_norma.py
+eval_norma_external.py
 
 Evaluation harness for the "Norma Syllabarum Graecarum" (NSG) benchmark:
 manually annotated Ancient Greek excerpts used to score automatic

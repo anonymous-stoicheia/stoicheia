@@ -1,4 +1,4 @@
-"""MeterModel: CharDiff-grc encoder + per-letter macron and scansion heads."""
+"""MeterModel: Stoicheia encoder + per-letter macron and scansion heads."""
 from __future__ import annotations
 
 from dataclasses import dataclass, field

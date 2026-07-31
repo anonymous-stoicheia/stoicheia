@@ -17,7 +17,7 @@
 # convention (see scripts/slurm/README.md point 6).
 CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
 export CHARDIFF_ROOT
-# Train one arm of the biaffine parser (frozen CharDiff/LemmaDiff + scalar mix + biaffine head).
+# Train one arm of the biaffine parser (frozen Stoicheia/LemmaDiff + scalar mix + biaffine head).
 #   sbatch scripts/slurm/syntax_train.sbatch configs/syntax/parser_char.json
 set -euo pipefail
 SYN_ROOT=$CHARDIFF_ROOT

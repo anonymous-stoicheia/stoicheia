@@ -8,7 +8,7 @@ The headline "Overall Average CER" in the DSH 41(1) comparison paper (2026) is t
 per-length means, so that is what we report as CER_macro for comparability; the
 sample-weighted CER_micro is printed alongside rather than chosen selectively.
 
-  python3 .scratch/merge_dsh.py
+  python3 analysis/merge_dsh.py
 """
 import glob, json, os
 

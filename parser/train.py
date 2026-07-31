@@ -1,4 +1,4 @@
-"""Train a deep-biaffine dependency parser over the CharDiff-grc char arm with a learned
+"""Train a deep-biaffine dependency parser over the Stoicheia char arm with a learned
 scalar mix. With finetune=true the backbone trains too (enc_lr) alongside the scalar-mix +
 biaffine head (lr), like morphparse.
 
@@ -36,7 +36,7 @@ from parser.model import CharArm, SyntaxModel
 
 
 def build_char_arm(device, attn="sdpa", finetune=False):
-    """Load the frozen CharDiff-grc backbone (formerly parser/build.py, trimmed of the
+    """Load the frozen Stoicheia backbone (formerly parser/build.py, trimmed of the
     LemmaDiff-grc-dependent build_lemma_arm sibling that lived alongside it)."""
     ckpt = os.path.expandvars(os.environ["CHARDIFF_CKPT"])
     model, pcfg = load_backbone(ckpt, device, attn_impl=attn)

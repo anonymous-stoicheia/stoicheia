@@ -29,8 +29,8 @@ import orjson
 import zstandard as zstd
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUTDIR = os.environ.get("DOC_OUTDIR",
-                        "$CHARDIFF_DATA")
+OUTDIR = os.path.expandvars(os.environ.get("DOC_OUTDIR",
+                        "$CHARDIFF_DATA"))
 
 # IA/archive.org work ids identified as epigraphic/papyrological SOURCEBOOKS (the
 # entire volume is a corpus of inscriptions or papyri, not incidental quotation).

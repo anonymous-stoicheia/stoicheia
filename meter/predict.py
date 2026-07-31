@@ -288,8 +288,8 @@ def main():
     a = ap.parse_args()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model, sd = load_model(a.model, device, a.attn)
-    src = Path(os.environ.get("MACRONIZER_SRC",
-                              "$MACRONIZER_SRC"))
+    src = Path(os.path.expandvars(os.environ.get("MACRONIZER_SRC",
+                              "$MACRONIZER_SRC")))
     if a.norma:
         pred_out = a.pred_out or (Path(sd["cfg"]["out_dir"]) / "norma_pred.jsonl")
         run_norma(model, sd, device, a.micro, pred_out, a.norma_source)

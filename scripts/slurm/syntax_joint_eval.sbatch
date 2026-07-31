@@ -17,11 +17,11 @@
 # convention (see scripts/slurm/README.md point 6).
 CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
 export CHARDIFF_ROOT
-#   sbatch scripts/slurm/syntax_eval.sbatch $SYN_DATA/runs/parser_char
+#   sbatch scripts/slurm/syntax_joint_eval.sbatch $SYN_DATA/runs/joint_docclean_f3_s0
 set -euo pipefail
 SYN_ROOT=$CHARDIFF_ROOT
 source "$SYN_ROOT/env.sh"
-RUN="${1:?usage: sbatch scripts/joint_eval.sbatch <run_dir> [greedy|mst]}"
+RUN="${1:?usage: sbatch scripts/slurm/syntax_joint_eval.sbatch <run_dir> [greedy|mst]}"
 export DECODE="${2:-greedy}"
 srun apptainer exec --nv $APPTAINER_BINDS $SIF bash -lc "
   export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$GCB_ROOT

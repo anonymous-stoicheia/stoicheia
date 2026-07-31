@@ -1,4 +1,4 @@
-"""HF-Hub-compatible processor for CharDiff-grc-tagger-parser.
+"""HF-Hub-compatible processor for Stoicheia-tagger-parser.
 
 Turns one or more already word-tokenized sentences into the model's input tensors (the same
 four character planes as the base CharBertProcessor, plus a `word_id` array pooling characters

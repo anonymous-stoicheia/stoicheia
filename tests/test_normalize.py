@@ -17,7 +17,7 @@ from data.normalize import (ALPHABET, LETTER_IDS, _EXTRA_BASE, ARCHAIC, DIA_STAT
                             unpack_dia, _pack_dia)
 
 import os
-RAW = Path(os.environ.get("GCB_DATA", "$CHARDIFF_DATA")) \
+RAW = Path(os.path.expandvars(os.environ.get("GCB_DATA", "$CHARDIFF_DATA"))) \
     / "raw/AncientGreek/data"
 
 

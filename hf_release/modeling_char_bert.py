@@ -1,4 +1,4 @@
-"""HF-Hub-compatible model for CharDiff-grc (CharBertEncoder).
+"""HF-Hub-compatible model for Stoicheia (CharBertEncoder).
 
 Self-contained: vendors the transformer primitives (RMSNorm/RoPE/Attention/GeGLU/Block)
 so this file has no dependency on the original research repo. Uses the SDPA attention

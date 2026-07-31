@@ -17,7 +17,7 @@
 # convention (see scripts/slurm/README.md point 6).
 CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
 export CHARDIFF_ROOT
-# Usage: sbatch scripts/slurm/insc_finetune.sbatch [config]
+# Usage: sbatch scripts/slurm/insc_finetune_v2.sbatch [config]
 set -euo pipefail
 CONFIG="${1:-configs/insc/finetune.json}"
 INS_ROOT=$CHARDIFF_ROOT

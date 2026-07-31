@@ -47,7 +47,7 @@ Design decisions that deviate from a raw char encoder (flagged explicitly, not s
         `.shared` matrix. `_find_embeddings` (used by `param_groups_hf`) checks for `.shared`
         as a fallback path so that lone matrix still gets the same shallowest-LR treatment
         BERT-style embeddings get, instead of silently falling into the flat-LR catch-all.
-  - Word/subword alignment does NOT reuse CharDiff-grc's char-level normalize_record. It tokenizes
+  - Word/subword alignment does NOT reuse Stoicheia's char-level normalize_record. It tokenizes
     the whole sentence (every token, Greek and non-Greek) with `is_split_into_words=True` and
     reads back `BatchEncoding.word_ids()`, which fast (Rust-backed) HF tokenizers support
     directly. See tagger/dataset.py::encode_sentence_hf for the alignment/labels code -- this

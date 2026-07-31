@@ -9,8 +9,8 @@ from tagger.conllu import read_conllu, write_conllu
 from tagger.dataset import TaggerDataset, batch_rows, encode_sentence, encode_word, pack_rows
 from tagger.edits import LabelVocab, form_key
 
-KFOLD = Path(os.environ.get("TAGGER_KFOLD",
-             "$CHARDIFF_DATA/treebanks/oga_repo/kfold"))
+KFOLD = Path(os.path.expandvars(os.environ.get("TAGGER_KFOLD",
+             "$CHARDIFF_DATA/treebanks/oga_repo/kfold")))
 
 
 @pytest.fixture(scope="module")

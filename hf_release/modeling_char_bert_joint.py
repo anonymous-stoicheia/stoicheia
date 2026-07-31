@@ -1,4 +1,4 @@
-"""HF-Hub-compatible model for CharDiff-grc-tagger-parser (JointModel: tagger + biaffine parser).
+"""HF-Hub-compatible model for Stoicheia-tagger-parser (JointModel: tagger + biaffine parser).
 
 Self-contained: vendors the transformer primitives (RMSNorm/RoPE/Attention/GeGLU/Block/
 build_attn_mask) verbatim from modeling_char_bert.py, plus the tagger/parser primitives

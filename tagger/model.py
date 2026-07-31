@@ -1,4 +1,4 @@
-"""TaggerModel: CharDiff-grc encoder + word pooling + factored XPOS / edit-script / UPOS heads."""
+"""TaggerModel: Stoicheia encoder + word pooling + factored XPOS / edit-script / UPOS heads."""
 from __future__ import annotations
 
 from dataclasses import dataclass

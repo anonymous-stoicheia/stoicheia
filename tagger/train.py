@@ -1,4 +1,4 @@
-"""Fine-tune CharDiff-grc into a joint lemmatizer + XPOS tagger.
+"""Fine-tune Stoicheia into a joint lemmatizer + XPOS tagger.
 
 Single-process or torchrun/DDP (data-parallel over packed rows; the dataset is tiny,
 every rank holds it all in RAM and takes a disjoint slice of rows each epoch).

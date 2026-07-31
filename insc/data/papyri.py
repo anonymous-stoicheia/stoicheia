@@ -19,7 +19,7 @@ import numpy as np
 from data.normalize import ALPHABET, Stats, normalize_record  # noqa: F401
 from meta_vocab import UNK_REGION, UNK_CENTURY
 
-JSONL = Path("$AGD_DATA/data/papyri_clean.jsonl")
+JSONL = Path(os.path.expandvars("$AGD_DATA/data/papyri_clean.jsonl"))
 GAP_RE = re.compile(r"-+|…+")
 _DASH_RE = re.compile(r"-+")
 _ELLIPSIS_RE = re.compile(r"…+")

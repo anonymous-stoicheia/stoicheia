@@ -1,6 +1,6 @@
 """Treebank -> model batches.
 
-Each syntactic word's FORM is encoded independently through CharDiff-grc's
+Each syntactic word's FORM is encoded independently through Stoicheia's
 normalize_record (guaranteeing exact word<->char-span alignment), sentences are the
 concatenation of their encodable words, and whole sentences are greedily packed into
 fixed-length rows with per-sentence seg_ids (block-diagonal attention, exactly like

@@ -15,8 +15,8 @@ from meter.marks import (MAC_LONG, MAC_SHORT, SCAN_HEAVY, SCAN_LIGHT, SCAN_VERSE
                          insert_marks, merge_vowelless_syllables,
                          parse_macron_line, parse_scan_line)
 
-SRC = Path(os.environ.get("MACRONIZER_SRC",
-                          "$MACRONIZER_SRC"))
+SRC = Path(os.path.expandvars(os.environ.get("MACRONIZER_SRC",
+                          "$MACRONIZER_SRC")))
 
 # ---------------------------------------------------------------- old-project reference
 DICHRONA = set("αιυ")
@@ -33,7 +33,7 @@ def _has(ch, mark):
 
 
 def markable_ref(chars, i):
-    """Verbatim port of GreekMacronizer/scripts/macronize_corpus.py::markable."""
+    """Verbatim port of the macron data tree/scripts/macronize_corpus.py::markable."""
     ch = chars[i]
     b = _base(ch)
     if b not in DICHRONA:

@@ -1,4 +1,4 @@
-"""JointModel: one fine-tuned CharDiff-grc backbone -> word vectors -> ALL CoNLL-U columns.
+"""JointModel: one fine-tuned Stoicheia backbone -> word vectors -> ALL CoNLL-U columns.
 
 Shares the tagger's pooled + scalar-mixed word representation between:
   * the tagger heads (factored XPOS / lemma edit-script / UPOS / flat-tag) — row-level, and

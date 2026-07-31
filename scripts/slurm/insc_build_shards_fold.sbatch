@@ -15,13 +15,11 @@
 # immune to that copy (see scripts/slurm/README.md point 6).
 CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
 export CHARDIFF_ROOT
-# THE FIX for the fold-leakage bug: build_shards.py/build_pap_shards.py were run ONCE
-# with the default (unset INSC_TEST_DIGIT/VAL_DIGIT -> "3"/"4") split and the resulting
-# $INS_DATA/shards/iphi_punct + pap_punct were then reused, unmodified, by ALL 10 fold
-# configs -- so every fold except t3v4/t4v5 fine-tuned directly on its own held-out test
-# digit's real data (confirmed: the shared shard's index has ~36k records for EVERY digit
-# except 3 and 4). This script builds each fold's OWN correctly-rotated shard pair by
-# setting INSC_TEST_DIGIT/VAL_DIGIT before the build, not just before eval.
+# Builds each fold's OWN correctly-rotated shard pair by setting INSC_TEST_DIGIT/
+# VAL_DIGIT before the build, not just before eval. This matters: a single shard pair
+# built under the default 3/4 split must NOT be reused by the other fold configs --
+# every fold except t3v4/t4v5 would then fine-tune directly on its own held-out test
+# digit's real data.
 # Usage: sbatch scripts/slurm/insc_build_shards_fold.sbatch <test_digit> <val_digit>
 set -euo pipefail
 TEST_DIGIT="${1:?usage: sbatch scripts/slurm/insc_build_shards_fold.sbatch <test_digit> <val_digit>}"

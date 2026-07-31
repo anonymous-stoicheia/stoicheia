@@ -1,15 +1,15 @@
-"""Bridge to the CharDiff-grc (GreekCharBERT) backbone — the ONLY module that touches it.
+"""Bridge to the Stoicheia (Stoicheia) backbone — the ONLY module that touches it.
 
 The pretraining repo is imported live via $GCB_ROOT (see env.sh); nothing there is
 modified. At release time this shim is the single place to swap in the published
-CharDiff-grc package or a vendored copy of model/ + data/normalize.py.
+Stoicheia package or a vendored copy of model/ + data/normalize.py.
 """
 from __future__ import annotations
 
 import os
 import sys
 
-_GCB = os.environ.get("GCB_ROOT", "$CHARDIFF_DATA")
+_GCB = os.path.expandvars(os.environ.get("GCB_ROOT", "$CHARDIFF_DATA"))
 if _GCB not in sys.path:
     sys.path.insert(0, _GCB)
 
@@ -77,7 +77,7 @@ class CharBertWithHidden(CharBertEncoder):
 
 
 def load_backbone(ckpt_path, device, attn_impl="sdpa"):
-    """Load a CharDiff-grc pretraining checkpoint into a hidden-exposing encoder.
+    """Load a Stoicheia pretraining checkpoint into a hidden-exposing encoder.
 
     Mirrors eval/intrinsic.py::load_model; returns (model, pretrain_cfg_dict).
 

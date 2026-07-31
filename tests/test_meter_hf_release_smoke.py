@@ -1,4 +1,4 @@
-"""Smoke test for the CharDiff-grc-meter HF-Hub wrapper (hf_release/*_meter.py) and
+"""Smoke test for the Stoicheia-meter HF-Hub wrapper (hf_release/*_meter.py) and
 its checkpoint-conversion path (scripts/convert_checkpoint_to_hf.py --kind meter).
 
 Builds a real (tiny) MeterModel with the actual training-side classes

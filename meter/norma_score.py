@@ -2,7 +2,7 @@
 
 Self-contained on purpose (stdlib only) so this can be lifted out and dropped
 straight into the Norma dataset repo for anyone to score their own predictions
-against -- it does not import anything else from CharDiff-grc.
+against -- it does not import anything else from Stoicheia.
 
 Both tasks are scored by projecting the annotation onto LETTER ORDINALS (the
 n-th actual Greek letter in the line, ignoring whitespace/punctuation/marks

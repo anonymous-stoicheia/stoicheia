@@ -73,4 +73,4 @@ differing sentences are not treated as leakage. Bronze is machine
 back-translation from Latin; verbatim quotations are caught, free paraphrase
 of content is out of scope by design.
 
-Pipeline: $CHARDIFF_ROOT/pipeline/
+Pipeline: `data/split_pipeline/`

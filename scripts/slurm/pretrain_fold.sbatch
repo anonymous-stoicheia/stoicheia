@@ -20,7 +20,7 @@ export CHARDIFF_ROOT
 # One 10-fold replica training job. Usage: sbatch scripts/slurm/pretrain_fold.sbatch <fold 0-9>
 # Identical to final.sbatch except the data root points at the fold's decontaminated
 # shards (via GCB_DATA_ROOT -> stage_shards.sh) and out_dir at runs/gcb_fold_<k>.
-# Submit as a chain via scripts/launch_fold_chain.sh — resumes from out_dir/last.pt.
+# Submit as a chain via scripts/pretrain/launch_fold_chain.sh — resumes from out_dir/last.pt.
 set -euo pipefail
 FOLD="${1:?usage: sbatch scripts/fold.sbatch <fold 0-9>}"
 source $CHARDIFF_ROOT/env.sh

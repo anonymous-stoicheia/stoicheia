@@ -31,8 +31,8 @@ from common import MIN_SEG_CHARS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "work", "doc_clean")
-OUTDIR = os.environ.get("DOC_OUTDIR",
-                        "$CHARDIFF_DATA")
+OUTDIR = os.path.expandvars(os.environ.get("DOC_OUTDIR",
+                        "$CHARDIFF_DATA"))
 PAPYRI_SOURCES = {"ddbdp", "dclp"}
 
 

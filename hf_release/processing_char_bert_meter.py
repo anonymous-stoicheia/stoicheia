@@ -1,4 +1,4 @@
-"""HF-Hub-compatible processor for CharDiff-grc-meter: text <-> the model's five
+"""HF-Hub-compatible processor for Stoicheia-meter: text <-> the model's five
 input planes (chars/boundary/dia/punct/cap -- capitalization is a real input here,
 unlike the base pretrained model, where it is output-only), plus decode helpers for
 the two production tasks: macronization (vowel-length marks on ambiguous dichrona)
