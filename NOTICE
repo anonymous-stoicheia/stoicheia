@@ -1,0 +1,20 @@
+Stoicheia
+Copyright 2026 Eric Cullhed
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This distribution includes, as a git submodule at `ithaca_upstream/`, the Ithaca codebase
+from DeepMind:
+
+    Ithaca
+    Copyright DeepMind Technologies Limited
+    https://github.com/google-deepmind/ithaca
+    Licensed under the Apache License, Version 2.0
+
+Ithaca (Assael, Sommerschield, Shillingford, Bordbar, Pavlopoulos, Chatzipanagiotou,
+Androutsopoulos, Prag & de Freitas, "Restoring and attributing ancient texts using deep
+neural networks", Nature 2022) is vendored here unmodified, purely as a reference baseline
+that this project's own inscription-restoration/attribution evaluation code (`insc/eval/`)
+compares against. No code from Ithaca has been copied into this repository's own source
+tree; it is pulled in only via the submodule reference. See the submodule's own LICENSE file
+for its complete terms.

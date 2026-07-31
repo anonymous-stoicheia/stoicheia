@@ -1,0 +1,122 @@
+# Reproducing Stoicheia
+
+## 1. Environment
+
+```bash
+git clone --recurse-submodules https://github.com/ANON-ORG/stoicheia
+cd Stoicheia
+export CHARDIFF_DATA=/path/to/a/writable/data+checkpoints/directory
+source env.sh
+pip install -e .
+```
+
+For GPU training at scale, the project used an Apptainer container on aarch64 GH200
+nodes via a SLURM cluster; the container image itself is not included in this repo (see
+`scripts/slurm/README.md` for what's expected inside it, and how to point `CHARDIFF_SIF`
+at your own equivalent, or run without a container at all). See the same file for the
+cluster-specific sbatch templates (edit the account/partition placeholders before
+submitting). For CPU-only work (tests, small-scale inference, data preparation),
+`pip install -r requirements-cpu.txt` is sufficient — no container needed,
+`attn_impl="sdpa"` runs on CPU.
+
+## 2. Data
+
+Three core datasets are already public and used as-is (no re-release needed):
+
+```python
+from datasets import load_dataset
+gold_silver = load_dataset("ANON-ORG/AncientGreek")                         # pretraining corpus
+bronze = load_dataset("ANON-ORG/SyntheticAncientGreek-CorpusCorporum")      # synthetic augmentation
+inscriptions = load_dataset("ANON-ORG/Inscriptions_2")                     # PHI inscriptions
+```
+
+Two further data dependencies are external, citable resources — clone/download them
+directly rather than expecting a copy in this repo:
+- **OGA/AGDT treebank** (tagging/parsing fine-tuning, morphosyntax evaluation): clone
+  Celano's own repository, `git.informatik.uni-leipzig.de/celano/morphosyntactic_parser_for_oga`.
+- **Norma** (macronization/scansion benchmark): already public on GitHub — see the
+  citation in the paper's Data section.
+
+One dataset is newly released with this paper (the only genuine gap found during
+preparation — a tagger warmup corpus that lived only in an internal project tree):
+```python
+silver_lemma = load_dataset("ANON-ORG/Stoicheia-silver-lemma")
+```
+
+The 10-fold decontamination split was built via MinHash-LSH near-duplicate clustering,
+a last-digit rule for papyri/inscriptions, and n-gram decontamination against the eval
+sets — but that clustering/splitting pipeline itself is not part of this release. What
+*is* included is the downstream consumer, `data/build_fold_shards.py`, which takes an
+already-split fold's `train.jsonl.zst` and builds the memmap shards the pretraining
+loader reads. In practice you don't need to rebuild the fold assignments from scratch:
+use the pretrained checkpoints directly (`MODEL_CARDS_INDEX.md`), or, if you need the
+exact per-fold train/val/test record-id assignments used in the paper, contact the
+authors rather than expecting to regenerate them bit-for-bit from this repo alone.
+
+## 3. Pretraining (the 11 backbones)
+
+```bash
+sbatch scripts/slurm/pretrain_fold.sbatch 0     # one of ten literary folds (0-9)
+sbatch scripts/slurm/pretrain_doc_clean.sbatch  # the documentary-clean model
+```
+
+Each is a long-running, checkpointed, resumable job chain (dev-driven schedule, not
+step-capped — see the paper's Model section for the staged-anneal training regime).
+Pretrained checkpoints are also available directly on the Hub (see
+`MODEL_CARDS_INDEX.md`) — you do not need to re-pretrain to use or fine-tune the models.
+
+## 4. Fine-tuning the three downstream tasks
+
+All three fine-tune from `$CHARDIFF_DATA/runs/gcb_doc_clean/best.pt` (or the equivalent
+Hub checkpoint, downloaded locally first if you want to fine-tune outside this
+pipeline's own checkpoint format).
+
+```bash
+# restoration (inscriptions + papyri)
+sbatch scripts/slurm/insc_finetune_v2.sbatch configs/insc/finetune_both_docclean.json
+
+# joint tagger + dependency parser
+sbatch scripts/slurm/syntax_joint_ddp.sbatch configs/syntax/joint_docclean_f3_s0.json
+
+# macronization + metrical scansion
+sbatch scripts/slurm/meter_meter.sbatch configs/meter/joint_docclean.json
+```
+
+For the leak-proof 10-fold restoration rotation used to interrogate individual
+inscriptions/papyri (every document gets a fine-tuned model that provably never saw it,
+regardless of which digit its ID ends in — restoration fine-tunes in about an hour, so
+the full rotation is cheap):
+
+```bash
+# test_digit/val_digit rotate together: (1,2), (2,3), ..., (9,0), (0,1)
+sbatch scripts/slurm/insc_finetune_fold.sbatch configs/insc/finetune_both_ft_docclean_t1v2.json 1 2
+```
+
+Each `configs/insc/finetune_both_ft_docclean_t*v*.json` pins its own `test_digit`/
+`val_digit` fields; `insc/train/finetune_v2.py` reads them and sets
+`INSC_TEST_DIGIT`/`INSC_VAL_DIGIT` itself before any data loads, so the intended split
+holds even if you run the script directly instead of through
+`insc_finetune_fold.sbatch` (whose positional digit args exist only to name the sbatch
+job/log files consistently, not to control the actual split). The eval scripts
+(`insc/eval/restore_strict{,_papyri}.py`) are not config-driven — when evaluating one of
+these fold models, export the matching `INSC_TEST_DIGIT`/`INSC_VAL_DIGIT` yourself
+before `--make-samples`/`--ckpt` (defaults to the flagship 3/4 split otherwise).
+
+## 5. Evaluation (reproducing the paper's tables)
+
+```bash
+python -m insc.eval.restore_strict --run $CHARDIFF_DATA/runs/both_ft_docclean --split test
+python -m parser.joint_evaluate --run $CHARDIFF_DATA/parser_data/runs/joint_docclean_f3_s0 --split test
+python -m meter.predict --model $CHARDIFF_DATA/runs/meter_joint_docclean/best.pt --norma
+```
+
+## 6. Tests
+
+```bash
+pytest tests/ -q
+```
+CPU-only, seconds-scale. Covers normalization/packing/noising (pretraining), edit-script
+lemma encoding + dataset construction (tagger), macron/scansion mark parsing (meter),
+plus lightweight forward-pass smoke tests for the restoration and joint tagger/parser
+pipelines (tiny randomly-initialized configs — these check the tensor plumbing survives
+refactors, not model quality).
