@@ -11,7 +11,7 @@ weights are on the HuggingFace Hub — see [`MODEL_CARDS_INDEX.md`](MODEL_CARDS_
 for the full list, or jump straight to
 [`ANON-ORG/Stoicheia-doc_clean`](https://huggingface.co/ANON-ORG/Stoicheia-doc_clean)
 (the flagship backbone) or
-[`ANON-ORG/Stoicheia-restoration`](https://huggingface.co/ANON-ORG/Stoicheia-restoration) /
+[`ANON-ORG/Stoicheia-restoration-test3`](https://huggingface.co/ANON-ORG/Stoicheia-restoration-test3) (or any of the ten digit-rotation checkpoints) /
 [`-tagger-parser`](https://huggingface.co/ANON-ORG/Stoicheia-tagger-parser) for a
 ready-to-use downstream model (or [`-meter`](https://huggingface.co/ANON-ORG/Stoicheia-meter) for
 macronization and scansion). All model repos are currently **private**; they will be

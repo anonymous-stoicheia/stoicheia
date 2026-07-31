@@ -22,7 +22,7 @@ All built on `Stoicheia-doc_clean`.
 
 | model | task |
 |---|---|
-| [`ANON-ORG/Stoicheia-restoration`](https://huggingface.co/ANON-ORG/Stoicheia-restoration) | restoration of damaged inscriptions and papyri |
+| [`ANON-ORG/Stoicheia-restoration-test0`](https://huggingface.co/ANON-ORG/Stoicheia-restoration-test0) … [`-test9`](https://huggingface.co/ANON-ORG/Stoicheia-restoration-test9) | documentary restoration, ten checkpoints — checkpoint *k* holds out every PHI/TM identifier ending in digit *k*, so every document in the corpus has a model that provably never saw it |
 | [`ANON-ORG/Stoicheia-tagger-parser`](https://huggingface.co/ANON-ORG/Stoicheia-tagger-parser) | morphosyntactic tagging (XPOS/UPOS/lemma) + dependency parsing |
 | [`ANON-ORG/Stoicheia-meter`](https://huggingface.co/ANON-ORG/Stoicheia-meter) | macronization (vowel length) + metrical scansion |
 
