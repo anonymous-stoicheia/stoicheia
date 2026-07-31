@@ -13,8 +13,8 @@ for the full list, or jump straight to
 (the flagship backbone) or
 [`ANON-ORG/Stoicheia-restoration`](https://huggingface.co/ANON-ORG/Stoicheia-restoration) /
 [`-tagger-parser`](https://huggingface.co/ANON-ORG/Stoicheia-tagger-parser) for a
-ready-to-use downstream model (a `-meter` model is planned but not yet published —
-see `MODEL_CARDS_INDEX.md`). All model repos are currently **private**; they will be
+ready-to-use downstream model (or [`-meter`](https://huggingface.co/ANON-ORG/Stoicheia-meter) for
+macronization and scansion). All model repos are currently **private**; they will be
 made public alongside publication.
 
 ## Quickstart (no training required)
@@ -57,13 +57,17 @@ reproduction walkthrough.
 ## Citation
 
 ```bibtex
-  title     = {Stoicheia: A Character-Level Masked-Diffusion Model for Ancient Greek},
-  year      = {2026},
-  note      = {citation to be finalized on publication}
+@misc{stoicheia2026,
+  title  = {Stoicheia: Character-Level Masked Diffusion for Ancient Greek Textual
+            Restoration, Parsing, and Metrical Scansion},
+  author = {Anonymous},
+  year   = {2026},
+  note   = {Under review; citation to be finalized on publication}
 }
 ```
 
 ## License
 
-Apache 2.0 (see `LICENSE`). Vendored/submoduled third-party code (DeepMind's Ithaca
-baseline, `ithaca_upstream/`) retains its own Apache 2.0 license — see `NOTICE`.
+Apache 2.0 (see `LICENSE`). External baselines (DeepMind's Ithaca and predictingthepast releases) are
+downloaded separately from their own repositories and retain their own licenses — see
+`NOTICE` and `REPRODUCING.md`.

@@ -3,7 +3,8 @@ Copyright 2026 Eric Cullhed
 
 This product is licensed under the Apache License, Version 2.0 (see LICENSE).
 
-This distribution includes, as a git submodule at `ithaca_upstream/`, the Ithaca codebase
+Evaluation of the Ithaca and Aeneas baselines uses DeepMind's released code, obtained
+separately from their repositories (not vendored here): the Ithaca codebase
 from DeepMind:
 
     Ithaca
