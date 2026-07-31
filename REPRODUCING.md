@@ -120,3 +120,15 @@ lemma encoding + dataset construction (tagger), macron/scansion mark parsing (me
 plus lightweight forward-pass smoke tests for the restoration and joint tagger/parser
 pipelines (tiny randomly-initialized configs — these check the tensor plumbing survives
 refactors, not model quality).
+
+## Reproducing the 10-fold split itself
+
+The split is not an input -- it is constructed by the 13-stage pipeline in
+`data/split_pipeline/` (sentence segmentation, pristine-edition clustering via
+exact/MinHash-LSH/shared-sentence evidence, zone assignment, per-fold exclusion
+masks, documentary decontamination incl. blocklist, bronze back-translation
+filters, verification, manifests). `data/fold_manifests/SPLIT_DESIGN.md`
+documents the design; `fold_k_test_works.tsv.gz` lists every work in fold k's
+test bucket (group id, kind, source, record/char counts, author+title), so the
+"provably never seen" guarantee is checkable work-by-work without rebuilding
+anything.
