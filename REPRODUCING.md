@@ -134,6 +134,13 @@ test bucket (group id, kind, source, record/char counts, author+title), so the
 "provably never seen" guarantee is checkable work-by-work without rebuilding
 anything.
 
+## Revision naming
+
+The paper's reconstruction revisions v1 and v2 correspond, for historical
+reasons, to configuration files named `finetune_whole_v3_*` and
+`finetune_whole_v4_*` respectively (earlier internal iterations v1/v2 were
+superseded before evaluation and are not part of the release).
+
 ## External pieces the harnesses expect
 
 * Meter training data: `MACRONIZER_SRC` must point at a checkout of the
