@@ -3,10 +3,10 @@ HF-Hub-ready model repo (config.json + model.safetensors + modeling/configuratio
 processing .py files + model card), dropping optimizer state and training-only config.
 
   python convert_checkpoint_to_hf.py --kind backbone \
-      --ckpt $STOICHEIA_DATA/runs/gcb_doc_clean/best.pt \
+      --ckpt $STOICHEIA_DATA/runs/stoicheia_doc_clean/best.pt \
       --out hf_release/Stoicheia-doc_clean \
       --name "Stoicheia (documentary-clean)" \
-      --metrics-json $STOICHEIA_DATA/runs/gcb_doc_clean/eval.jsonl
+      --metrics-json $STOICHEIA_DATA/runs/stoicheia_doc_clean/eval.jsonl
 
   python convert_checkpoint_to_hf.py --kind tagger_parser \
       --ckpt $STOICHEIA_DATA/parser_data/runs/joint_docclean_f3_s0/best.pt \
@@ -248,8 +248,16 @@ def _scrub_paths(obj):
         return {k: _scrub_paths(v) for k, v in obj.items()}
     if isinstance(obj, list):
         return [_scrub_paths(v) for v in obj]
-    if isinstance(obj, str) and ("/" in obj) and _re.search(r"^(/|\$|~)", obj):
-        return obj.rsplit("/", 1)[-1]
+    if isinstance(obj, str):
+        if ("/" in obj) and _re.search(r"^(/|\$|~)", obj):
+            obj = obj.rsplit("/", 1)[-1]
+        # run directories were named after the project's internal codename; the released
+        # artifacts use one name only, so the sidecar must not reintroduce the other
+        for _a, _b in (("greekcharbert", "stoicheia"), ("GreekCharBERT", "Stoicheia"),
+                       ("gcb_", "stoicheia_"), ("chardiff", "stoicheia"),
+                       ("CharDiff", "Stoicheia")):
+            obj = obj.replace(_a, _b)
+        return obj
     return obj
 
 
