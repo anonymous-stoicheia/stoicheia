@@ -38,7 +38,6 @@ designed to be fine-tuned per-task rather than distributed as a general-purpose 
 | [`anonymous-stoicheia/AncientGreek`](https://huggingface.co/datasets/anonymous-stoicheia/AncientGreek) | main pretraining corpus (gold + silver tiers) |
 | [`anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum`](https://huggingface.co/datasets/anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum) | bronze synthetic augmentation tier |
 | [`anonymous-stoicheia/Inscriptions_2`](https://huggingface.co/datasets/anonymous-stoicheia/Inscriptions_2) | PHI inscriptions used for the 10-fold split and restoration fine-tuning |
-| [`anonymous-stoicheia/Stoicheia-silver-lemma`](https://huggingface.co/datasets/anonymous-stoicheia/Stoicheia-silver-lemma) | silver lemma-warmup data for the tagger (new with this release) |
 
 Not re-released (already public elsewhere, cited not duplicated): the *Norma*
 macronization/scansion benchmark (GitHub), the OGA/AGDT treebank

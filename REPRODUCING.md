@@ -38,12 +38,6 @@ directly rather than expecting a copy in this repo:
   cited in the paper's macronization section; the harnesses read it through
   `MACRONIZER_SRC` (see the last section of this file).
 
-One dataset is newly released with this paper (a silver lemma warmup corpus for the
-tagger):
-```python
-silver_lemma = load_dataset("anonymous-stoicheia/Stoicheia-silver-lemma")
-```
-
 The 10-fold decontamination split is built by the pipeline in `data/split_pipeline/`
 (MinHash-LSH near-duplicate clustering, a last-digit rule for papyri/inscriptions,
 and n-gram decontamination against the eval sets — see the last section of this file
