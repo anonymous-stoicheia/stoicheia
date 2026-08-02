@@ -51,6 +51,18 @@ best_text, best_width, candidates = processor.restore_elastic(model, text, mask_
 print(best_text)  # -> ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν.
 ```
 
+A damaged inscription, unaccented and unspaced where the break falls:
+
+```python
+print(processor.restore_respaced(model, "ἔδοξεν τηβου-- καὶ τῷ δήμῳ"))
+# -> ἔδοξεν τῇ βουλῇ καὶ τῷ δήμῳ
+```
+
+Accents and word division are predictions, not requirements: a bare majuscule transcript is as
+readable to this model as a modern critical text, and the gap is filled in the same pass that
+decides where the words end.
+
+
 ## What's here
 
 - `model/`, `data/`, `train/`, `eval/` — the pretraining architecture (`CharBertEncoder`,
