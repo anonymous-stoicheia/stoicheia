@@ -295,6 +295,33 @@ class CharBertProcessor:
         cap = batch["_cap"]
         return self._restore_polytonic(chars, dia, cap, pred_bnd, punct)
 
+    def restore_respaced(self, model, text: str, **kw) -> str:
+        """Restore a gap, then re-decide word division on the completed text.
+
+        The five planes are predicted independently in one pass, which is fine when the
+        whole context is bare (everything is decided together) but unreliable when a gap
+        sits inside already-spaced text: the boundary head sees a half-known segmentation
+        and hedges, so a correctly restored word can come back cut in two.
+
+        This does it in the order an editor would: fill the letters first, throw away the
+        spacing entirely, and run the model again over the resulting *scriptio continua*
+        with the boundary and diacritic planes unknown everywhere -- the regime the model
+        was pretrained on. `text` may carry either a `-` run or a `[N±M]` marker.
+        """
+        if _ELASTIC_RE.search(text):
+            filled, _, _ = self.restore_elastic(model, text, **kw)
+        else:
+            batch = self(text)
+            with torch.no_grad():
+                out = model(**{k: v for k, v in batch.items() if not k.startswith("_")})
+            filled = self.decode_restoration(out, batch, **kw)
+        letters = "".join(ch for ch in unicodedata.normalize("NFD", filled)
+                          if unicodedata.category(ch).startswith("L"))
+        batch = self(letters, mask_planes=["dia", "boundary"], has_boundaries=False)
+        with torch.no_grad():
+            out = model(**{k: v for k, v in batch.items() if not k.startswith("_")})
+        return self.decode_restoration(out, batch)
+
     def restore_elastic(self, model, text: str, min_width: int = 1,
                          mask_dia_boundary: bool = False, predict_punct: bool = True,
                          sentence_breaks: bool = True, gap_word_breaks: bool = True):
