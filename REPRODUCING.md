@@ -118,6 +118,18 @@ Repeat over the ten `v4_*` runs (paper revision v2), the ten `v3_*` runs (v1), a
 `v3_randinit_*` runs (the matched control), then aggregate and run the fold-paired
 permutation tests with `python -m analysis.sig_all`.
 
+**Starting from a released checkpoint.** The Hub ships `model.safetensors` for
+`AutoModel.from_pretrained`, while the evaluation scripts read the trainer's `.pt`. Convert once:
+
+```bash
+python scripts/hf_to_eval_checkpoint.py \
+    --repo anonymous-stoicheia/Stoicheia-restoration-test3 --out runs/t3v4/best.pt
+```
+
+The result is bit-identical to the checkpoint the paper evaluated (268 tensors, max absolute
+difference 0.0). Export `INSC_TEST_DIGIT`/`INSC_VAL_DIGIT` to match the checkpoint's held-out
+digit before running any evaluation below.
+
 **Head-to-head against Ithaca and Aeneas (Table 2).** All three systems read the frozen
 3,000-sample digit-3 file shipped in `insc/eval/frozen/`:
 
