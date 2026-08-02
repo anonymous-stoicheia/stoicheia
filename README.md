@@ -14,8 +14,15 @@ for the full list, or jump straight to
 [`anonymous-stoicheia/Stoicheia-restoration-test3`](https://huggingface.co/anonymous-stoicheia/Stoicheia-restoration-test3) (or any of the ten digit-rotation checkpoints) /
 [`-tagger-parser`](https://huggingface.co/anonymous-stoicheia/Stoicheia-tagger-parser) for a
 ready-to-use downstream model (or [`-meter`](https://huggingface.co/anonymous-stoicheia/Stoicheia-meter) for
-macronization and scansion). All model repos are currently **private**; they will be
-made public alongside publication.
+macronization and scansion). All model repos are public: weights ship as `model.safetensors` with a `config.json`,
+loadable directly through `AutoModel.from_pretrained(..., trust_remote_code=True)`.
+
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/anonymous-stoicheia/stoicheia/blob/main/Stoicheia_demo.ipynb)
+
+Run everything in the browser: [`Stoicheia_demo.ipynb`](Stoicheia_demo.ipynb) restores a lacuna of
+unknown width, picks the checkpoint that has provably never read your document, tags and parses a
+verse of Homer, macronizes and scans a line, and scores the macronizer on the benchmark.
 
 ## Quickstart (no training required)
 

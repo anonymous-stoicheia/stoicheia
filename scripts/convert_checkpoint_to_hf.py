@@ -3,16 +3,16 @@ HF-Hub-ready model repo (config.json + model.safetensors + modeling/configuratio
 processing .py files + model card), dropping optimizer state and training-only config.
 
   python convert_checkpoint_to_hf.py --kind backbone \
-      --ckpt $STOICHEIA_DATA/runs/stoicheia_doc_clean/best.pt \
+      --ckpt $STOICHEIA_DATA/runs/gcb_doc_clean/best.pt \
       --out hf_release/Stoicheia-doc_clean \
       --name "Stoicheia (documentary-clean)" \
-      --metrics-json $STOICHEIA_DATA/runs/stoicheia_doc_clean/eval.jsonl
+      --metrics-json $STOICHEIA_DATA/runs/gcb_doc_clean/eval.jsonl
 
   python convert_checkpoint_to_hf.py --kind tagger_parser \
-      --ckpt $SYN_DATA/runs/joint_docclean_f3_s0/best.pt \
+      --ckpt $STOICHEIA_DATA/parser_data/runs/joint_docclean_f3_s0/best.pt \
       --out hf_release/Stoicheia-tagger-parser \
-      --vocab-json $SYN_DATA/runs/joint_docclean_f3_s0/vocab.json \
-      --deprel-vocab $SYN_DATA/runs/joint_docclean_f3_s0/deprel_vocab.json
+      --vocab-json $STOICHEIA_DATA/parser_data/runs/joint_docclean_f3_s0/vocab.json \
+      --deprel-vocab $STOICHEIA_DATA/parser_data/runs/joint_docclean_f3_s0/deprel_vocab.json
 """
 from __future__ import annotations
 
@@ -153,9 +153,9 @@ def convert(ckpt_path: str, out_dir: str, kind: str, vocab_json: str | None = No
         training_meta = {
             "cfg": sd.get("cfg"), "tcfg": sd.get("tcfg"), "pcfg": sd.get("pcfg"),
             "pretrain_cfg": sd.get("pretrain_cfg"), "epoch": sd.get("epoch"), "dev": sd.get("dev"),
-            "_source_checkpoint": str(ckpt_path),
+            "_source_checkpoint": Path(ckpt_path).name,
         }
-        (out / "training_metadata.json").write_text(json.dumps(training_meta, indent=2, default=str))
+        (out / "training_metadata.json").write_text(json.dumps(_scrub_paths(training_meta), indent=2, default=str))
 
         clean_sd = {k: v.contiguous() for k, v in state_dict.items()}
         save_file(clean_sd, str(out / "model.safetensors"))
@@ -186,9 +186,9 @@ def convert(ckpt_path: str, out_dir: str, kind: str, vocab_json: str | None = No
         training_meta = {
             "cfg": sd.get("cfg"), "mcfg": sd.get("mcfg"), "pretrain_cfg": sd.get("pretrain_cfg"),
             "epoch": sd.get("epoch"), "dev": sd.get("dev"), "T": sd.get("T"),
-            "_source_checkpoint": str(ckpt_path),
+            "_source_checkpoint": Path(ckpt_path).name,
         }
-        (out / "training_metadata.json").write_text(json.dumps(training_meta, indent=2, default=str))
+        (out / "training_metadata.json").write_text(json.dumps(_scrub_paths(training_meta), indent=2, default=str))
 
         # mac_w/scan_w are loss-only class weights (used only by MeterModel.loss(),
         # never by forward()); the HF wrapper doesn't declare them, so drop them here
@@ -224,9 +224,9 @@ def convert(ckpt_path: str, out_dir: str, kind: str, vocab_json: str | None = No
 
     # training-only metadata, kept for provenance/appendix purposes, not needed to load the model
     training_meta = {k: v for k, v in raw_cfg.items() if k not in _ARCH_FIELDS}
-    training_meta["_source_checkpoint"] = str(ckpt_path)
+    training_meta["_source_checkpoint"] = Path(ckpt_path).name
     training_meta["_source_step"] = sd.get("step")
-    (out / "training_metadata.json").write_text(json.dumps(training_meta, indent=2, default=str))
+    (out / "training_metadata.json").write_text(json.dumps(_scrub_paths(training_meta), indent=2, default=str))
 
     # weights: drop optimizer state, keep only the model's own state dict
     clean_sd = {k: v.contiguous() for k, v in state_dict.items()}
@@ -238,6 +238,19 @@ def convert(ckpt_path: str, out_dir: str, kind: str, vocab_json: str | None = No
     print(f"converted {ckpt_path} -> {out}  (kind={kind}, d_model={arch_cfg['d_model']}, "
           f"depth={arch_cfg['depth']}, params={sum(v.numel() for v in clean_sd.values()):,})")
     return out
+
+
+def _scrub_paths(obj):
+    """Absolute cluster paths in a training cfg would identify the machine (and its owner),
+    so reduce every path-like value to its basename before it reaches the sidecar."""
+    import re as _re
+    if isinstance(obj, dict):
+        return {k: _scrub_paths(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_scrub_paths(v) for v in obj]
+    if isinstance(obj, str) and ("/" in obj) and _re.search(r"^(/|\$|~)", obj):
+        return obj.rsplit("/", 1)[-1]
+    return obj
 
 
 def main():
