@@ -219,13 +219,32 @@ class CharBertProcessor:
             words.append(w)
         return " ".join(words)
 
-    def decode_restoration(self, model_out, batch) -> str:
+    def decode_restoration(self, model_out, batch, predict_punct: bool = True,
+                           sentence_breaks: bool = True, gap_word_breaks: bool = True) -> str:
         """Fill masked positions with the model's argmax predictions; keep every
         other position exactly as given. Each plane is filled independently
         wherever IT is unknown -- chars/cap only inside a '-' gap (chars==MASK),
         but boundary/dia/punct wherever THAT plane is UNK, which may be the whole
         sequence if mask_planes was also used for joint gap+accent+boundary
-        restoration (not just the '-' gap itself)."""
+        restoration (not just the '-' gap itself).
+
+        `predict_punct=False` leaves punctuation exactly as given instead of filling
+        it from the model. Documentary fine-tunes are trained on inscriptions and
+        papyri, whose editions carry almost no punctuation, so their punctuation head
+        is weakly supervised and tends to sprinkle stops into an otherwise correct
+        reading; epigraphic and papyrological use generally wants it off.
+
+        `sentence_breaks=False` demotes every *predicted* sentence boundary to a plain
+        word boundary, so a filled gap comes back as running text. The same fine-tunes
+        read editions in which sentence division is editorial rather than attested, and
+        will happily place a full stop inside a word they otherwise restore correctly.
+
+        `gap_word_breaks=False` forbids new word division *inside* a filled gap, so the
+        restored letters continue the surrounding word. This is the common editorial
+        case -- a break within a single word, as in `στεφά--- ἀρετῆς` -- where the model
+        recovers the letters correctly but the boundary head, which is free to segment
+        anywhere, may cut them into pieces. Leave it on when the lacuna plausibly spans
+        a word boundary."""
         pred_char = model_out.char.argmax(-1)[0].tolist()
         pred_bnd = model_out.boundary.argmax(-1)[0].tolist()
         pred_dia = model_out.dia.argmax(-1)[0].tolist()
@@ -236,16 +255,19 @@ class CharBertProcessor:
         dia = batch["dia"][0].tolist()
         punct = batch["punct"][0].tolist()
         cap = batch["_cap"]
+        was_masked = [c == MASK for c in chars]
         for i in range(len(chars)):
             if chars[i] == MASK:
                 chars[i] = pred_char[i] if pred_char[i] < 24 else 0
                 cap[i] = pred_cap[i]
             if boundary[i] == UNK_BND:
-                boundary[i] = pred_bnd[i]
+                boundary[i] = 0 if (not gap_word_breaks and was_masked[i]) else pred_bnd[i]
+                if not sentence_breaks and boundary[i] == 2:
+                    boundary[i] = 1
             if dia[i] == UNK_DIA:
                 dia[i] = pred_dia[i]
             if punct[i] == UNK_PUNCT:
-                punct[i] = pred_punct[i]
+                punct[i] = pred_punct[i] if predict_punct else 0
         return self._restore_polytonic(chars, dia, cap, boundary, punct)
 
     def decode_diacritics(self, model_out, batch) -> str:
@@ -274,7 +296,8 @@ class CharBertProcessor:
         return self._restore_polytonic(chars, dia, cap, pred_bnd, punct)
 
     def restore_elastic(self, model, text: str, min_width: int = 1,
-                         mask_dia_boundary: bool = False):
+                         mask_dia_boundary: bool = False, predict_punct: bool = True,
+                         sentence_breaks: bool = True, gap_word_breaks: bool = True):
         """Restore a lacuna of *uncertain* width -- the realistic editorial case,
         since editors estimate a lacuna's length, they rarely know it exactly.
 
@@ -328,16 +351,19 @@ class CharBertProcessor:
             dia = batch["dia"][0].tolist()
             punct = batch["punct"][0].tolist()
             cap = batch["_cap"]
+            was_masked = [c == MASK for c in chars]
             for i in range(len(chars)):
                 if chars[i] == MASK:
                     chars[i] = pred_char[i] if pred_char[i] < 24 else 0
                     cap[i] = pred_cap[i]
                 if boundary[i] == UNK_BND:
-                    boundary[i] = pred_bnd[i]
+                    boundary[i] = 0 if (not gap_word_breaks and was_masked[i]) else pred_bnd[i]
+                    if not sentence_breaks and boundary[i] == 2:
+                        boundary[i] = 1
                 if dia[i] == UNK_DIA:
                     dia[i] = pred_dia[i]
                 if punct[i] == UNK_PUNCT:
-                    punct[i] = pred_punct[i]
+                    punct[i] = pred_punct[i] if predict_punct else 0
             filled = self._restore_polytonic(chars, dia, cap, boundary, punct)
             candidates.append((L, filled, gap_logp))
 

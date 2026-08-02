@@ -29,10 +29,16 @@ verse of Homer, macronizes and scans a line, and scores the macronizer on the be
 ```python
 import torch
 from transformers import AutoModel
+from huggingface_hub import hf_hub_download
 
-model = AutoModel.from_pretrained("anonymous-stoicheia/Stoicheia-doc_clean", trust_remote_code=True)
+REPO = "anonymous-stoicheia/Stoicheia-doc_clean"
+model = AutoModel.from_pretrained(REPO, trust_remote_code=True).eval()
 
-from processing_char_bert import CharBertProcessor  # ships in the model repo
+# `trust_remote_code` loads the model classes; the processor is a separate helper, so
+# fetch it into the working directory before importing it.
+hf_hub_download(repo_id=REPO, filename="processing_char_bert.py", local_dir=".")
+from processing_char_bert import CharBertProcessor
+
 processor = CharBertProcessor()
 
 # a lacuna of UNCERTAIN width, in text that's ALSO fully bare scriptio continua (no
