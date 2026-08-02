@@ -1,8 +1,8 @@
 {
   "name": "meter_mac_v2",
   "seed": 0,
-  "ckpt": "$GCB_DATA/runs/greekcharbert_anneal_staged/best.pt",
-  "out_dir": "$GCB_DATA/runs/meter_mac_v2",
+  "ckpt": "$STOICHEIA_DATA/runs/stoicheia_pretrain_staged/best.pt",
+  "out_dir": "$STOICHEIA_DATA/runs/meter_mac_v2",
   "encoded": "$METER_DATA/encoded",
   "attn": "sdpa",
   "T": 2048,

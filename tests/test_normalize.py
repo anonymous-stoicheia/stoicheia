@@ -17,7 +17,7 @@ from data.normalize import (ALPHABET, LETTER_IDS, _EXTRA_BASE, ARCHAIC, DIA_STAT
                             unpack_dia, _pack_dia)
 
 import os
-RAW = Path(os.path.expandvars(os.environ.get("GCB_DATA", "$CHARDIFF_DATA"))) \
+RAW = Path(os.path.expandvars(os.environ.get("STOICHEIA_DATA", "$STOICHEIA_DATA"))) \
     / "raw/AncientGreek/data"
 
 
@@ -191,6 +191,8 @@ def test_restore_polytonic_simple():
                                    "repaired/repaired-00000.parquet"])
 def test_roundtrip_on_real_records(shard):
     pq = pytest.importorskip("pyarrow.parquet")
+    if not (RAW / shard).is_file():
+        pytest.skip("pretraining corpus shards not present under $STOICHEIA_DATA")
     t = pq.read_table(RAW / shard, columns=["text"])
     rng = np.random.default_rng(0)
     idx = rng.choice(t.num_rows, size=200, replace=False)

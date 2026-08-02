@@ -15,8 +15,8 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Per-fold CER/top1/top20 on EACH fold's own held-out test digit, evaluated separately on
 # the inscriptions (iphi) and papyri test sets -- the un-conditioned baseline the new
 # metadata-primed models need to beat. Unlike insc_eval.sbatch (fixed digit 3/4), this
@@ -34,7 +34,7 @@ TEST_DIGIT="${2:?test_digit required}"
 VAL_DIGIT="${3:?val_digit required}"
 OUT_PREFIX="${4:?out_prefix required}"
 N="${5:-200}"
-INS_ROOT=$CHARDIFF_ROOT
+INS_ROOT=$STOICHEIA_ROOT
 
 source "$INS_ROOT/env.sh"
 
@@ -47,7 +47,7 @@ echo "ckpt=$CKPT test_digit=$TEST_DIGIT val_digit=$VAL_DIGIT excl_iphi=$EXCL_IPH
 
 srun apptainer exec --nv $APPTAINER_BINDS $SIF bash -lc "
     set -e
-    export PYTHONPATH=$GCB_ROOT
+    export PYTHONPATH=$STOICHEIA_ROOT
     export INSC_TEST_DIGIT=$TEST_DIGIT INSC_VAL_DIGIT=$VAL_DIGIT
     cd $INS_ROOT
     python insc/eval/restore.py --ckpt $CKPT --split test --domain iphi   --n $N --exclude $EXCL_IPHI --out ${OUT_PREFIX}_iphi.json

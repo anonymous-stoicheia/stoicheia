@@ -26,7 +26,7 @@ import numpy as np
 import orjson
 import zstandard as zstd
 
-OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$CHARDIFF_DATA"))
+OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$STOICHEIA_DATA"))
 NGRAM = 8  # == pipeline spec (user-approved strictness: shared 8-gram = leak)
 SENT_RE = re.compile("[.;!?:\u00b7\u0387\u037e]+|\\n\\s*\\n")
 INSCR_REAL = ["edition", "with_diacritics", "without_diacritics", "ithaca_text"]

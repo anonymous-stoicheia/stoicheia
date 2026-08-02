@@ -25,4 +25,4 @@ EOF
   fi
 done
 echo "submitted 5 folds; evaluate each with:"
-echo "  python -m tagger.evaluate --run \$GCB_DATA/runs/<out_dir> --gold \$GCB_DATA/treebanks/oga_repo/kfold/test.conllu"
+echo "  python -m tagger.evaluate --run \$STOICHEIA_DATA/runs/<out_dir> --gold \$STOICHEIA_DATA/treebanks/oga_repo/kfold/test.conllu"

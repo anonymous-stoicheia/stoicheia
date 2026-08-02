@@ -1,7 +1,7 @@
 """Full constrained decode of a .conllu + official CoNLL-18 scoring.
 
-  python -m tagger.evaluate --run $GCB_DATA/runs/tagger_fold0_pilot \
-      --gold $GCB_DATA/treebanks/oga_repo/kfold/dev0.conllu [--no-lexicon] [--no-tag-constraint]
+  python -m tagger.evaluate --run $STOICHEIA_DATA/runs/tagger_fold0_pilot \
+      --gold $STOICHEIA_DATA/treebanks/oga_repo/kfold/dev0.conllu [--no-lexicon] [--no-tag-constraint]
 """
 from __future__ import annotations
 

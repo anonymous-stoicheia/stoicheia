@@ -17,7 +17,10 @@ from pathlib import Path
 import numpy as np
 
 from data.normalize import ALPHABET, Stats, normalize_record
-from meta_vocab import region_to_id, record_century_id
+try:                    # imported as a package module (python -m insc.data.iphi)
+    from insc.data.meta_vocab import region_to_id, record_century_id
+except ImportError:     # imported with insc/data on sys.path (how the trainers load it)
+    from meta_vocab import region_to_id, record_century_id
 
 JSONL = Path(os.path.expandvars("$INS_DATA/raw/iphi.jsonl"))
 GAP_RE = re.compile(r"-+")

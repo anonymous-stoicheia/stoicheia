@@ -7,7 +7,7 @@ the model works whether or not a real fragment's provenance/date is known. In-me
 whole PHI+papyri corpus is ~60M characters, far below GB-scale shard territory) -- no
 TierSpec/DataConfig/shard machinery needed.
 
-Same dev-stall-driven schedule as finetune_v2.py: warmup -> constant peak LR until dev loss
+Dev-stall-driven schedule: warmup -> constant peak LR until dev loss
 stalls -> cosine decay -> early stop, best.pt is the model of record. When meta_condition is
 on, the dev fixture is scored TWICE per eval -- once with real region/century, once with both
 forced to UNK -- so the with-vs-without-metadata comparison is visible throughout training,
@@ -166,7 +166,7 @@ def infinite_mix(pools, weights, rng):
 
 def dev_fixture_records(recs, exclude_path, n, seed=1234):
     """Fixed sample of clean val records (contamination-excluded), same convention as
-    finetune_v2.py's dev_records()."""
+    the documentary dev-record builder."""
     excl = set()
     if exclude_path:
         j = json.loads(Path(exclude_path).read_text())
@@ -303,7 +303,7 @@ def main():
     a = ap.parse_args()
     cfg = json.loads(Path(a.config).read_text())
     cfg["out_dir"] = os.path.expandvars(cfg["out_dir"])
-    # config-pinned test/val digit is authoritative, same convention as finetune_v2.py
+    # the config-pinned test/val digit is authoritative: it is exported before any data loads
     if "test_digit" in cfg:
         os.environ["INSC_TEST_DIGIT"] = str(cfg["test_digit"])
     if "val_digit" in cfg:

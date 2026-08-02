@@ -15,14 +15,14 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Same-recipe cross-encoder ablation, full 32-GPU multi-node DDP (identical recipe to
 # scripts/slurm/syntax_joint_ddp.sbatch, just pointed at a HF-backbone config). Fold 0, seed 0.
 # Usage: sbatch scripts/slurm/syntax_joint_hf_ddp.sbatch <encoder_tag>
 set -euo pipefail
 TAG="${1:?usage: sbatch scripts/joint_hf_ddp.sbatch <encoder_tag>}"
-SYN_ROOT=$CHARDIFF_ROOT
+SYN_ROOT=$STOICHEIA_ROOT
 source "$SYN_ROOT/env.sh"
 CONFIG="$SYN_ROOT/configs/syntax/joint_${TAG}_f0_s0.json"
 [ -f "$CONFIG" ] || { echo "missing $CONFIG"; exit 1; }
@@ -36,7 +36,7 @@ srun --ntasks="$SLURM_NNODES" --ntasks-per-node=1 bash -lc "
   source $SYN_ROOT/env.sh
   apptainer exec --nv \$APPTAINER_BINDS \$SIF bash -lc '
     set -e
-    export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$GCB_ROOT
+    export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$STOICHEIA_ROOT
     export HF_HOME=$HF_HOME
     export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
     export OMP_NUM_THREADS=16 TOKENIZERS_PARALLELISM=false

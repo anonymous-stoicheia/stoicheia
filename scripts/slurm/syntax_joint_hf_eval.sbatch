@@ -14,20 +14,20 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Held-out TEST split eval for a finished HF-backbone joint run.
 # Usage: sbatch scripts/slurm/syntax_joint_hf_eval.sbatch <encoder_tag>
 set -euo pipefail
 TAG="${1:?usage: sbatch scripts/joint_hf_eval.sbatch <encoder_tag>}"
-SYN_ROOT=$CHARDIFF_ROOT
-GCB_ROOT=$CHARDIFF_ROOT
-source $GCB_ROOT/env.sh
+SYN_ROOT=$STOICHEIA_ROOT
+STOICHEIA_ROOT=$STOICHEIA_ROOT
+source $STOICHEIA_ROOT/env.sh
 source $SYN_ROOT/env.sh
 
 apptainer exec --nv $APPTAINER_BINDS $SIF bash -c "
   set -e
-  export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$GCB_ROOT
+  export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$STOICHEIA_ROOT
   export HF_HOME=$HF_HOME
   cd $SYN_ROOT
   python -m parser.joint_evaluate --run \$SYN_DATA/runs/joint_${TAG}_f0_s0 --split test

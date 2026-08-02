@@ -15,26 +15,26 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Score checkpoints on the fold's REAL val split (unseen works). Tiny job (1 GPU) —
 # schedules as backfill even when the training fleet saturates the account cap.
 # Usage: sbatch scripts/slurm/pretrain_val_eval.sbatch <fold 0-9> [ckpt_name=best.pt]
 set -euo pipefail
 FOLD="${1:?usage: sbatch scripts/val_eval.sbatch <fold 0-9> [ckpt]}"
 CKPT="${2:-best.pt}"
-GCB_ROOT=$CHARDIFF_ROOT
-source $GCB_ROOT/env.sh
+STOICHEIA_ROOT=$STOICHEIA_ROOT
+source $STOICHEIA_ROOT/env.sh
 
-CK=$GCB_DATA/runs/gcb_fold_$FOLD/$CKPT
-VS=$GCB_DATA/folds/fold_$FOLD/val_shards/v1_punct
+CK=$STOICHEIA_DATA/runs/stoicheia_fold_$FOLD/$CKPT
+VS=$STOICHEIA_DATA/folds/fold_$FOLD/val_shards/v1_punct
 [ -f "$CK" ] || { echo "missing checkpoint $CK"; exit 1; }
 [ -f "$VS/index.parquet" ] || { echo "missing val shards $VS"; exit 1; }
 
 apptainer exec --nv $APPTAINER_BINDS $SIF bash -lc "
   set -e
-  export PYTHONPATH=$GCB_ROOT
-  cd $GCB_ROOT
+  export PYTHONPATH=$STOICHEIA_ROOT
+  cd $STOICHEIA_ROOT
   python -m eval.val_eval --ckpt $CK --val-shards $VS --n 1024
 "
 echo VAL_EVAL_DONE

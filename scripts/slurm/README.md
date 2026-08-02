@@ -25,28 +25,28 @@ Before submitting any of these, you MUST:
 3. **Check node/GPU counts and wall-time limits** (`--nodes`, `--gpus-per-node`, `-t`) against
    your own cluster's node shapes and queue limits — these were tuned for 4x GH200/node.
 
-4. **Set `CHARDIFF_SIF`** (or otherwise adapt the `apptainer exec --nv $SIF ...` calls) to your
+4. **Set `STOICHEIA_SIF`** (or otherwise adapt the `apptainer exec --nv $SIF ...` calls) to your
    own container image — the original NGC-based training container is not included in this
    repo. If you're not using a container at all, replace the `apptainer exec ...` wrapper with
    a plain shell invocation of the same inner command.
 
-5. **Set `CHARDIFF_DATA`** in your login-shell environment (or export it via `--export` on
-   `sbatch`) before submitting — every script assumes `$CHARDIFF_ROOT/env.sh` (sourced inside
-   the job) can resolve `CHARDIFF_DATA` for shard/checkpoint/run paths.
+5. **Set `STOICHEIA_DATA`** in your login-shell environment (or export it via `--export` on
+   `sbatch`) before submitting — every script assumes `$STOICHEIA_ROOT/env.sh` (sourced inside
+   the job) can resolve `STOICHEIA_DATA` for shard/checkpoint/run paths.
 
 6. **Submit from the repo root, with a `logs/` directory already there** (`mkdir -p logs`).
    Every script's `#SBATCH -o`/`-e` is a relative path (`logs/<name>-%j.out`) because
    `#SBATCH` directives are parsed statically by `sbatch` *before* the script body runs —
-   a script-computed variable like `$CHARDIFF_ROOT` is never expanded there. `sbatch`
+   a script-computed variable like `$STOICHEIA_ROOT` is never expanded there. `sbatch`
    resolves a relative `-o`/`-e` against the directory you ran `sbatch` from, which is
    reliable as long as that's the repo root and `logs/` exists first (`sbatch` does not
    create it, and job launch fails outright if it doesn't exist).
 
-7. **`CHARDIFF_DATA` must be exported in the *submitting* shell, or passed via `--export`**
+7. **`STOICHEIA_DATA` must be exported in the *submitting* shell, or passed via `--export`**
    — `env.sh` has no default for it and sourcing fails outright without one. Note that a
    job whose apptainer step runs with an empty `$SIF` will interpret the next token on the
    command line (e.g. the literal word `bash`) as the image path and fail near-instantly
-   with a cryptic "could not open image .../bash" error — check `CHARDIFF_SIF` first if
+   with a cryptic "could not open image .../bash" error — check `STOICHEIA_SIF` first if
    you see that.
 
 These templates were genericized from cluster-specific originals; wall-time budgets, node

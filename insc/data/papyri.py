@@ -17,7 +17,10 @@ from pathlib import Path
 import numpy as np
 
 from data.normalize import ALPHABET, Stats, normalize_record  # noqa: F401
-from meta_vocab import UNK_REGION, UNK_CENTURY
+try:                    # imported as a package module (python -m insc.data.papyri)
+    from insc.data.meta_vocab import UNK_REGION, UNK_CENTURY
+except ImportError:     # imported with insc/data on sys.path (how the trainers load it)
+    from meta_vocab import UNK_REGION, UNK_CENTURY
 
 JSONL = Path(os.path.expandvars("$AGD_DATA/data/papyri_clean.jsonl"))
 GAP_RE = re.compile(r"-+|…+")

@@ -7,12 +7,12 @@ Checks, per fold:
   2. leakage     no shard record id (base id, #segN stripped) appears in the fold's
                  val.jsonl.zst or test.jsonl.zst
   3. loader      MultiTierLoader yields records for gold/silver/bronze under stable_cfg
-                 and gold under anneal_cfg with GRC_DATA at the fold root
+                 and gold under anneal_cfg with STOICHEIA_DATA at the fold root
   4. eval        eval.intrinsic.held_out_records returns eval_n records
 
 Usage:
     python data/verify_fold_shards.py --fold-src .../10-fold_split/fold_0 \
-        --fold-root $GCB_DATA/folds/fold_0
+        --fold-root $STOICHEIA_DATA/folds/fold_0
 Exits non-zero on any failure.
 """
 from __future__ import annotations
@@ -46,7 +46,7 @@ def stream_ids(jsonl_zst, want_census=False):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--fold-src", required=True, help=".../10-fold_split/fold_k")
-    ap.add_argument("--fold-root", required=True, help="$GCB_DATA/folds/fold_k")
+    ap.add_argument("--fold-root", required=True, help="$STOICHEIA_DATA/folds/fold_k")
     ap.add_argument("--eval-n", type=int, default=256)
     a = ap.parse_args()
     src, root = Path(a.fold_src), Path(a.fold_root)

@@ -16,13 +16,13 @@ fold, seed = int(sys.argv[2]), int(sys.argv[3])
 cfg["fold"] = fold
 cfg["seed"] = seed
 cfg["name"] = f"tagger_final_f{fold}_s{seed}"
-cfg["out_dir"] = f"$GCB_DATA/runs/tagger_final_f{fold}_s{seed}"
+cfg["out_dir"] = f"$STOICHEIA_DATA/runs/tagger_final_f{fold}_s{seed}"
 json.dump(cfg, open(sys.argv[4], "w"), indent=2)
 EOF
     J=$(sbatch --parsable scripts/slurm/tagger_tagger.sbatch "$GEN")
     sbatch --dependency=afterany:$J scripts/slurm/tagger_eval.sbatch \
-      "\$GCB_DATA/runs/tagger_final_f${FOLD}_s${SEED}" \
-      "\$GCB_DATA/treebanks/oga_repo/kfold/test.conllu" > /dev/null
+      "\$STOICHEIA_DATA/runs/tagger_final_f${FOLD}_s${SEED}" \
+      "\$STOICHEIA_DATA/treebanks/oga_repo/kfold/test.conllu" > /dev/null
     echo "fold $FOLD seed $SEED: train $J (+chained test eval)"
   done
 done

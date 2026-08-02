@@ -7,8 +7,8 @@ the model has never seen any part of. Run it on any checkpoint, any time; it
 appends to <out_dir>/val_eval.jsonl and never touches training state.
 
 Usage (inside the training container, 1 GPU):
-    python -m eval.val_eval --ckpt $GCB_DATA/runs/gcb_fold_0/best.pt \
-        --val-shards $GCB_DATA/folds/fold_0/val_shards/v1_punct [--n 1024]
+    python -m eval.val_eval --ckpt $STOICHEIA_DATA/runs/stoicheia_fold_0/best.pt \
+        --val-shards $STOICHEIA_DATA/folds/fold_0/val_shards/v1_punct [--n 1024]
 """
 from __future__ import annotations
 

@@ -12,7 +12,7 @@ weighting, then summarized the same two ways as the existing tables:
 """
 import glob, json, os
 
-D = os.path.expandvars("$CHARDIFF_ROOT/ptp_out")
+D = os.path.expandvars("$STOICHEIA_ROOT/ptp_out")
 
 
 def merge(pattern):

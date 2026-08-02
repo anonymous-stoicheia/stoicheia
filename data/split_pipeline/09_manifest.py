@@ -26,12 +26,12 @@ import zstandard as zstd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$CHARDIFF_DATA"))
-OGA_XML = os.path.expandvars("$CHARDIFF_DATA/raw/oga/"
+OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$STOICHEIA_DATA"))
+OGA_XML = os.path.expandvars("$STOICHEIA_DATA/raw/oga/"
            "opera_graeca_adnotata_v0.2.0/work_chronology/texts/"
            "chronology_greek_works.xml")
-DDBDP_JSONL = os.path.expandvars("$CHARDIFF_DATA/clean/ddbdp.jsonl")
-PAPYRI_TM_JSONL = os.path.expandvars("$CHARDIFF_DATA/data/papyri_clean.jsonl")
+DDBDP_JSONL = os.path.expandvars("$STOICHEIA_DATA/clean/ddbdp.jsonl")
+PAPYRI_TM_JSONL = os.path.expandvars("$STOICHEIA_DATA/data/papyri_clean.jsonl")
 
 
 def load_oga_names():

@@ -15,16 +15,16 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Same-recipe cross-encoder ablation, rough-estimate pass: fold 0, seed 0 only,
 # full 4-GPU DDP torchrun per run.
 # Usage: sbatch scripts/slurm/syntax_joint_hf.sbatch <encoder_tag>   (e.g. xlmr_base, greberta, agbert, logion, xlmr_large, philberta, mbert)
 set -euo pipefail
 TAG="${1:?usage: sbatch scripts/joint_hf.sbatch <encoder_tag>}"
-SYN_ROOT=$CHARDIFF_ROOT
-GCB_ROOT=$CHARDIFF_ROOT
-source $GCB_ROOT/env.sh
+SYN_ROOT=$STOICHEIA_ROOT
+STOICHEIA_ROOT=$STOICHEIA_ROOT
+source $STOICHEIA_ROOT/env.sh
 source $SYN_ROOT/env.sh
 mkdir -p "$SYN_ROOT/logs"
 
@@ -35,7 +35,7 @@ PORT=$((29000 + SLURM_JOB_ID % 1000))
 
 apptainer exec --nv $APPTAINER_BINDS $SIF bash -c "
   set -e
-  export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$GCB_ROOT
+  export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$STOICHEIA_ROOT
   export HF_HOME=$HF_HOME
   cd $SYN_ROOT
   torchrun --nproc_per_node=4 --rdzv_backend=c10d --rdzv_endpoint=localhost:$PORT \

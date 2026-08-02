@@ -1,6 +1,6 @@
 """Bridge to the Stoicheia (Stoicheia) backbone — the ONLY module that touches it.
 
-The pretraining repo is imported live via $GCB_ROOT (see env.sh); nothing there is
+The pretraining repo is imported live via $STOICHEIA_ROOT (see env.sh); nothing there is
 modified. At release time this shim is the single place to swap in the published
 Stoicheia package or a vendored copy of model/ + data/normalize.py.
 """
@@ -9,7 +9,7 @@ from __future__ import annotations
 import os
 import sys
 
-_GCB = os.path.expandvars(os.environ.get("GCB_ROOT", "$CHARDIFF_DATA"))
+_GCB = os.path.expandvars(os.environ.get("STOICHEIA_ROOT", "$STOICHEIA_DATA"))
 if _GCB not in sys.path:
     sys.path.insert(0, _GCB)
 

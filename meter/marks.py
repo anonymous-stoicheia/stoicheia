@@ -27,7 +27,7 @@ import unicodedata
 
 import numpy as np
 
-from meter.backbone import ALPHABET  # noqa: F401  (ensures GCB_ROOT is on sys.path)
+from meter.backbone import ALPHABET  # noqa: F401  (ensures STOICHEIA_ROOT is on sys.path)
 from data.normalize import _KIND, K_LETTER, LETTER_IDS, unpack_dia
 
 MAC_LONG, MAC_SHORT = 0, 1

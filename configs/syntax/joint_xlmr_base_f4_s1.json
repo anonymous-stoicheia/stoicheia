@@ -1,5 +1,5 @@
 {
-  "kfold_dir": "$GCB_DATA/treebanks/oga_repo/kfold",
+  "kfold_dir": "$STOICHEIA_DATA/treebanks/oga_repo/kfold",
   "attn": "sdpa",
   "T": 2048,
   "W": 384,

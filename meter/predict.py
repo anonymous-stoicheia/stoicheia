@@ -1,7 +1,7 @@
 """Inference + benchmark glue for a trained MeterModel.
 
   # Norma benchmark, both tasks, scored in-process (--norma-source hf|git, default hf):
-  python -m meter.predict --model $GCB_DATA/runs/meter_joint/best.pt --norma \
+  python -m meter.predict --model $STOICHEIA_DATA/runs/meter_joint/best.pt --norma \
       [--pred-out data/norma_preds.jsonl] [--norma-source hf]
   # work-split scanner dev/test:
   python -m meter.predict --model ... --scan-split

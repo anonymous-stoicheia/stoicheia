@@ -15,22 +15,22 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Strict-protocol eval of OUR model on the frozen PAPYRI samples file (whole documents,
 # spaces count towards L, ctx=3200 guarantees full-document context).
 # Usage: sbatch scripts/slurm/insc_strict_ours_papyri.sbatch <ckpt> <lengths> <out.json> [shard i,k]
 set -euo pipefail
 CKPT="${1:?ckpt}"; LENGTHS="${2:?lengths}"; OUT="${3:?out}"; SHARD="${4:-}"
-INS_ROOT=$CHARDIFF_ROOT
-# Sourced ONCE here, at the top-level sbatch shell -- see insc_finetune_fold.sbatch for why
+INS_ROOT=$STOICHEIA_ROOT
+# Sourced ONCE here, at the top-level sbatch shell -- see the finetune launchersfold.sbatch for why
 # (re-sourcing env.sh inside a remote srun'd `bash -lc` can silently leave $SIF unset).
 source "$INS_ROOT/env.sh"
 SAMPLES=$INS_DATA/strict_test_samples_papyri.json
 
 srun apptainer exec --nv $APPTAINER_BINDS $SIF bash -lc "
     set -e
-    export PYTHONPATH=$GCB_ROOT
+    export PYTHONPATH=$STOICHEIA_ROOT
     cd $INS_ROOT
     python insc/eval/restore_strict_papyri.py --ckpt $CKPT --samples $SAMPLES \
       --lengths $LENGTHS --out $OUT ${SHARD:+--shard $SHARD}

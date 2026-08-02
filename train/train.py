@@ -5,7 +5,7 @@ Two-phase curriculum: 3-tier stable phase -> gold-only anneal in the WSD decay w
 Checkpoint/resume by step (every ckpt_every steps) — safe to run as a chain of
 independent, dependency-linked SLURM jobs instead of one long request.
 
-  torchrun --nproc_per_node=4 -m train.train --config configs/greekcharbert.json
+  torchrun --nproc_per_node=4 -m train.train --config configs/stoicheia.json
 """
 from __future__ import annotations
 
@@ -122,7 +122,7 @@ def main():
     ap.add_argument("--config", required=True)
     a = ap.parse_args()
     cfg = json.loads(Path(a.config).read_text())
-    cfg["out_dir"] = os.path.expandvars(cfg["out_dir"])   # allow "$GCB_DATA/..." in configs
+    cfg["out_dir"] = os.path.expandvars(cfg["out_dir"])   # allow "$STOICHEIA_DATA/..." in configs
     rank, world, is_ddp = ddp_setup()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.manual_seed(cfg["seed"] + rank)
@@ -130,7 +130,7 @@ def main():
     torch.backends.cuda.matmul.allow_tf32 = True
     torch.backends.cudnn.allow_tf32 = True
 
-    gdata = os.environ["GRC_DATA"]
+    gdata = os.environ["STOICHEIA_DATA"]
     # dev-driven regime: eval_shards points at the fold's REAL val split (unseen works);
     # all training decisions (anneal stall, early stop, best.pt) then key off dev, and
     # train_holdout=false returns the intra-train mod-200 holdout to training.

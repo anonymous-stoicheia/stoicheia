@@ -27,5 +27,5 @@
   "ckpt_every": 100,
   "eval_every_ckpt": true,
   "eval_n": 64,
-  "out_dir": "$GCB_DATA/runs/gcb_smoke"
+  "out_dir": "$STOICHEIA_DATA/runs/pretrain_smoke"
 }

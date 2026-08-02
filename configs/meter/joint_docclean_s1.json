@@ -1,8 +1,8 @@
 {
   "name": "meter_joint_docclean_s1",
   "seed": 1,
-  "ckpt": "$GCB_DATA/runs/gcb_doc_clean/best.pt",
-  "out_dir": "$GCB_DATA/runs/meter_joint_docclean_s1",
+  "ckpt": "$STOICHEIA_DATA/runs/stoicheia_doc_clean/best.pt",
+  "out_dir": "$STOICHEIA_DATA/runs/meter_joint_docclean_s1",
   "encoded": "$METER_DATA/encoded",
   "attn": "sdpa",
   "T": 2048,

@@ -33,7 +33,7 @@ from common import (fold_conflict_mask, N_BUCKETS, MASK_PTEST, MASK_PVAL,
                     ZONE_PTEST, ZONE_PVAL, ZONE_TRAIN, MIN_SEG_CHARS)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$CHARDIFF_DATA"))
+OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$STOICHEIA_DATA"))
 MIN_VAL_CHARS = 25
 INSCR_JSONL = os.path.join(ROOT, "raw", "Inscriptions_2",
                            "synthetic_editions_with_ithaca_text_fix.jsonl")

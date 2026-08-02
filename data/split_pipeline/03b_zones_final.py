@@ -29,8 +29,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import ZONE_PTEST, ZONE_PVAL, ZONE_TRAIN, work_prefix
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DDBDP_JSONL = os.path.expandvars("$CHARDIFF_DATA/clean/ddbdp.jsonl")
-PAPYRI_TM_JSONL = os.path.expandvars("$CHARDIFF_DATA/data/papyri_clean.jsonl")
+DDBDP_JSONL = os.path.expandvars("$STOICHEIA_DATA/clean/ddbdp.jsonl")
+PAPYRI_TM_JSONL = os.path.expandvars("$STOICHEIA_DATA/data/papyri_clean.jsonl")
 
 
 def digit_zone(numstr):

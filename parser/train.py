@@ -38,7 +38,7 @@ from parser.model import CharArm, SyntaxModel
 def build_char_arm(device, attn="sdpa", finetune=False):
     """Load the frozen Stoicheia backbone (formerly parser/build.py, trimmed of the
     LemmaDiff-grc-dependent build_lemma_arm sibling that lived alongside it)."""
-    ckpt = os.path.expandvars(os.environ["CHARDIFF_CKPT"])
+    ckpt = os.path.expandvars(os.environ["STOICHEIA_CKPT"])
     model, pcfg = load_backbone(ckpt, device, attn_impl=attn)
     n_layers = pcfg["depth"] + 1
     return CharArm(model, n_layers, finetune=finetune).to(device), pcfg["d_model"]

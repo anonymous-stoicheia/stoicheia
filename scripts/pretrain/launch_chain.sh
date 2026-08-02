@@ -5,11 +5,11 @@
 # timeout only loses at most one checkpoint interval, not the whole run.
 #
 # Usage: scripts/pretrain/launch_chain.sh [n_jobs] [hours_per_job] [config]
-#   scripts/pretrain/launch_chain.sh 6 8 configs/pretrain/greekcharbert.json   # 6 x 8h = 48h budget
+#   scripts/pretrain/launch_chain.sh 6 8 configs/pretrain/stoicheia.json   # 6 x 8h = 48h budget
 set -euo pipefail
 N=${1:-6}
 HOURS=${2:-8}
-CONFIG=${3:-configs/pretrain/greekcharbert.json}
+CONFIG=${3:-configs/pretrain/stoicheia.json}
 cd "$(dirname "$0")/../.."
 
 PREV=""

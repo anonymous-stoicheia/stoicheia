@@ -15,14 +15,14 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Data-parallel joint tagger+parser fine-tune. Multi-node torchrun with c10d rendezvous on
 # the batch master (same recipe as pretraining). Override node count at submit:
 #   sbatch --nodes 1 scripts/slurm/syntax_joint_ddp.sbatch configs/syntax/joint.json   # 4-GPU smoke
 #   sbatch          scripts/slurm/syntax_joint_ddp.sbatch configs/syntax/joint.json    # 32-GPU
 set -euo pipefail
-SYN_ROOT=$CHARDIFF_ROOT
+SYN_ROOT=$STOICHEIA_ROOT
 source "$SYN_ROOT/env.sh"
 CONFIG="${1:?usage: sbatch scripts/slurm/syntax_joint_ddp.sbatch <config.json>}"
 mkdir -p "$SYN_ROOT/logs"
@@ -35,8 +35,8 @@ srun --ntasks="$SLURM_NNODES" --ntasks-per-node=1 bash -lc "
   source $SYN_ROOT/env.sh
   apptainer exec --nv \$APPTAINER_BINDS \$SIF bash -lc '
     set -e
-    export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$GCB_ROOT
-    export CHARDIFF_CKPT=$CHARDIFF_CKPT
+    export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$STOICHEIA_ROOT
+    export STOICHEIA_CKPT=$STOICHEIA_CKPT
     export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
     export OMP_NUM_THREADS=16 TOKENIZERS_PARALLELISM=false
     cd $SYN_ROOT

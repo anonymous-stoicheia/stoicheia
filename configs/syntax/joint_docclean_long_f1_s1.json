@@ -1,5 +1,5 @@
 {
- "kfold_dir": "$GCB_DATA/treebanks/oga_repo/kfold",
+ "kfold_dir": "$STOICHEIA_DATA/treebanks/oga_repo/kfold",
  "attn": "sdpa",
  "T": 2048,
  "W": 384,
@@ -26,7 +26,7 @@
  "d_rel": 150,
  "w_parse": 1.0,
  "log_every": 10,
- "ckpt": "$GCB_DATA/runs/gcb_doc_clean/best.pt",
+ "ckpt": "$STOICHEIA_DATA/runs/stoicheia_doc_clean/best.pt",
  "name": "joint_docclean_long_f1_s1",
  "seed": 1,
  "fold": 1,

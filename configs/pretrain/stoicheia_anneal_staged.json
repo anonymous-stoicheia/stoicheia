@@ -1,5 +1,5 @@
 {
-  "name": "greekcharbert_anneal_staged",
+  "name": "stoicheia_pretrain_staged",
   "seed": 0,
   "d_model": 1024,
   "depth": 32,
@@ -29,5 +29,5 @@
   "ckpt_every": 2000,
   "eval_every_ckpt": true,
   "eval_n": 256,
-  "out_dir": "$GCB_DATA/runs/greekcharbert_anneal_staged"
+  "out_dir": "$STOICHEIA_DATA/runs/stoicheia_pretrain_staged"
 }

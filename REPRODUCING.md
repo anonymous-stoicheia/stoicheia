@@ -5,14 +5,14 @@
 ```bash
 git clone https://github.com/ANON-ORG/stoicheia
 cd stoicheia
-export CHARDIFF_DATA=/path/to/a/writable/data+checkpoints/directory
+export STOICHEIA_DATA=/path/to/a/writable/data+checkpoints/directory
 source env.sh
 pip install -e .
 ```
 
 For GPU training at scale, the project used an Apptainer container on aarch64 GH200
 nodes via a SLURM cluster; the container image itself is not included in this repo (see
-`scripts/slurm/README.md` for what's expected inside it, and how to point `CHARDIFF_SIF`
+`scripts/slurm/README.md` for what's expected inside it, and how to point `STOICHEIA_SIF`
 at your own equivalent, or run without a container at all). See the same file for the
 cluster-specific sbatch templates (edit the account/partition placeholders before
 submitting). For CPU-only work (tests, small-scale inference, data preparation),
@@ -34,8 +34,9 @@ Two further data dependencies are external, citable resources — clone/download
 directly rather than expecting a copy in this repo:
 - **OGA/AGDT treebank** (tagging/parsing fine-tuning, morphosyntax evaluation): clone
   Celano's own repository, `git.informatik.uni-leipzig.de/celano/morphosyntactic_parser_for_oga`.
-- **Norma** (macronization/scansion benchmark): already public on GitHub — see the
-  citation in the paper's Data section.
+- **Norma** (macronization/scansion benchmark): released with the vowel-length paper
+  cited in the paper's macronization section; the harnesses read it through
+  `MACRONIZER_SRC` (see the last section of this file).
 
 One dataset is newly released with this paper (a silver lemma warmup corpus for the
 tagger):
@@ -67,19 +68,20 @@ Pretrained checkpoints are also available directly on the Hub (see
 
 ## 4. Fine-tuning the three downstream tasks
 
-All three fine-tune from `$CHARDIFF_DATA/runs/gcb_doc_clean/best.pt` (or the equivalent
+All three fine-tune from `$STOICHEIA_DATA/runs/stoicheia_doc_clean/best.pt` (or the equivalent
 Hub checkpoint, downloaded locally first if you want to fine-tune outside this
 pipeline's own checkpoint format).
 
 ```bash
-# restoration (inscriptions + papyri)
-sbatch scripts/slurm/insc_finetune_v2.sbatch configs/insc/finetune_both_docclean.json
+# restoration, v2 recipe, held-out digit 3 (the paper's headline model)
+sbatch scripts/slurm/insc_finetune_whole_4node.sbatch configs/insc/finetune_whole_v4_t3v4.json
 
 # joint tagger + dependency parser
 sbatch scripts/slurm/syntax_joint_ddp.sbatch configs/syntax/joint_docclean_f3_s0.json
 
-# macronization + metrical scansion
+# macronization + metrical scansion (joint), and the macron-only arm of the ablation
 sbatch scripts/slurm/meter_meter.sbatch configs/meter/joint_docclean.json
+sbatch scripts/slurm/meter_meter.sbatch configs/meter/mac_v2.json
 ```
 
 For the leak-proof 10-fold restoration rotation used to interrogate individual
@@ -92,24 +94,77 @@ the full rotation is cheap):
 sbatch scripts/slurm/insc_finetune_whole_4node.sbatch configs/insc/finetune_whole_v4_t1v2.json
 ```
 
-Each `configs/insc/finetune_whole_v4_t*v*.json` pins its own `test_digit`/
-`val_digit` fields; `insc/train/finetune_v2.py` reads them and sets
+Each `configs/insc/finetune_whole_v*_t*v*.json` pins its own `test_digit`/
+`val_digit` fields; `insc/train/finetune_whole.py` reads them and exports
 `INSC_TEST_DIGIT`/`INSC_VAL_DIGIT` itself before any data loads, so the intended split
-holds even if you run the script directly instead of through
-`insc_finetune_fold.sbatch` (whose positional digit args exist only to name the sbatch
-job/log files consistently, not to control the actual split). The eval scripts
+holds however the script is launched. The eval scripts
 (`insc/eval/restore_strict{,_papyri}.py`) are not config-driven — when evaluating one of
 these fold models, export the matching `INSC_TEST_DIGIT`/`INSC_VAL_DIGIT` yourself
 before `--make-samples`/`--ckpt` (defaults to the flagship 3/4 split otherwise).
 
 ## 5. Evaluation (reproducing the paper's tables)
 
+Every reconstruction number uses one protocol: whole documents, real lacunae left in
+context as unknowns, spaces counted toward the gap length, word division predicted, beam
+20, Levenshtein CER. `--make-samples` writes a frozen sample file; evaluation then reads
+it, so every system sees identical gaps.
+
+**Ten-fold rotation (Table 1).** For each held-out digit `t` (val digit `v = (t+1) % 10`),
+with the arm's checkpoint from `MODEL_CARDS_INDEX.md`:
+
 ```bash
-python -m insc.eval.restore_strict --ckpt $CHARDIFF_DATA/insc_data/runs/whole_v4_t3v4/final.pt \
-    --samples insc/eval/frozen/strict_test_fold3_samples.json --out strict_v4.json
-python -m parser.joint_evaluate --run $CHARDIFF_DATA/parser_data/runs/joint_docclean_f3_s0 --split test
-python -m meter.predict --model $CHARDIFF_DATA/runs/meter_joint_docclean/best.pt --norma
+export INSC_TEST_DIGIT=3 INSC_VAL_DIGIT=4          # must match the model's fold
+python -m insc.eval.restore_strict         --make-samples --n 100 --samples f3_inscr.json
+python -m insc.eval.restore_strict_papyri  --make-samples --n 100 --samples f3_pap.json
+python -m insc.eval.restore_strict        --ckpt <run>/best.pt --samples f3_inscr.json --out v2_d3_inscr.json
+python -m insc.eval.restore_strict_papyri --ckpt <run>/best.pt --samples f3_pap.json   --out v2_d3_pap.json
 ```
+
+Repeat over the ten `v4_*` runs (paper revision v2), the ten `v3_*` runs (v1), and the ten
+`v3_randinit_*` runs (the matched control), then aggregate and run the fold-paired
+permutation tests with `python -m analysis.sig_all`.
+
+**Head-to-head against Ithaca and Aeneas (Table 2).** All three systems read the frozen
+3,000-sample digit-3 file shipped in `insc/eval/frozen/`:
+
+```bash
+python -m insc.eval.restore_strict --ckpt <digit-3 run>/best.pt \
+    --samples insc/eval/frozen/strict_test_fold3_samples.json --out ours_strict.json
+python -m insc.eval.ithaca_baseline --samples insc/eval/frozen/strict_test_fold3_samples.json --out ithaca.json
+python -m insc.eval.ptp_baseline    --ckpt <aeneas>.pkl \
+    --samples insc/eval/frozen/strict_test_fold3_samples.json --out aeneas.json
+```
+
+**Recently edited documents (Tables 3-4).** Scored on the comparison release's own
+documents and normalization, with every system rescored under the same Levenshtein CER:
+
+```bash
+python -m insc.eval.restore_dsh --ckpt <run>/best.pt --data <recent-inscriptions>.jsonl --out ours_recent.json
+python -m insc.eval.ptp_baseline --ckpt <aeneas>.pkl --dsh <recent-inscriptions>.jsonl --out aeneas_recent.json
+python -m analysis.merge_dsh          # aggregate shards, macro over gap lengths
+```
+
+**Tagging and parsing (Table 5).** The full 5-fold x 2-seed matrix per encoder:
+
+```bash
+for f in 0 1 2 3 4; do for s in 0 1; do
+  sbatch scripts/slurm/syntax_joint_ddp.sbatch configs/syntax/joint_docclean_f${f}_s${s}.json
+done; done
+python -m parser.joint_evaluate --run $STOICHEIA_DATA/parser_data/runs/joint_docclean_f0_s0 --split test
+```
+
+**Macronization and scansion (Tables 6-7).** The macronization ablation uses the
+macron-only runs (`mac_v2*`, six seeds per arm), the scansion ablation the joint runs
+(`joint_docclean*` / `joint_randinit*`); the external macronizer comparison scores the
+joint model on Norma's 1,916 test positions:
+
+```bash
+python -m meter.predict --model $STOICHEIA_DATA/runs/meter_joint_docclean/best.pt --norma
+python -m meter.predict --model $STOICHEIA_DATA/runs/meter_mac_v2/best.pt --norma --norma-source git
+```
+
+`python -m analysis.paper_tables` collects finished evaluation logs into the table
+layouts used in the paper.
 
 ## 6. Tests
 

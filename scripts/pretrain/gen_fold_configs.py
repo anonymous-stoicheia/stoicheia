@@ -1,20 +1,20 @@
 """Generate configs/folds/fold_{0..9}.json — byte-identical to the flagship config
 except name and out_dir. Data paths are NOT in the config: each fold job exports
-GCB_DATA_ROOT=$GCB_DATA/folds/fold_k so stage_shards.sh points GRC_DATA at the fold."""
+STOICHEIA_DATA_ROOT=$STOICHEIA_DATA/folds/fold_k so stage_shards.sh points STOICHEIA_DATA at the fold."""
 import json
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[2]   # repo root (scripts/pretrain/ -> ../..)
-base = json.load(open(root / "configs" / "pretrain" / "greekcharbert.json"))
+base = json.load(open(root / "configs" / "pretrain" / "stoicheia.json"))
 out = root / "configs" / "pretrain" / "folds"
 out.mkdir(parents=True, exist_ok=True)
 for k in range(10):
     c = dict(base)
-    c["name"] = f"gcb_fold_{k}"
-    c["out_dir"] = f"$GCB_DATA/runs/gcb_fold_{k}"
+    c["name"] = f"stoicheia_fold_{k}"
+    c["out_dir"] = f"$STOICHEIA_DATA/runs/stoicheia_fold_{k}"
     # dev-driven regime: eval (anneal stall / early stop / best.pt) runs on the fold's
     # REAL val split (unseen works); no intra-train holdout is set aside.
-    c["eval_shards"] = f"$GCB_DATA/folds/fold_{k}/val_shards/v1_punct"
+    c["eval_shards"] = f"$STOICHEIA_DATA/folds/fold_{k}/val_shards/v1_punct"
     c["train_holdout"] = False
     # both stages run until dev stall, not until a schedule cap: stable phase has an
     # unreachable hard cap; decay window doubled (48k) with dev-stall early-stop as the

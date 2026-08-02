@@ -6,11 +6,11 @@
 # Usage: scripts/pretrain/finalize_fold.sh <fold 0-9> [--prune]
 set -euo pipefail
 FOLD=${1:?usage: finalize_fold.sh <fold 0-9> [--prune]}
-GCB_DATA=${GCB_DATA:?set GCB_DATA/CHARDIFF_DATA (source env.sh first)}
-GCB_ROOT=${GCB_ROOT:?set GCB_ROOT/CHARDIFF_ROOT (source env.sh first)}
-RUN=$GCB_DATA/runs/gcb_fold_$FOLD
+STOICHEIA_DATA=${STOICHEIA_DATA:?set STOICHEIA_DATA/STOICHEIA_DATA (source env.sh first)}
+STOICHEIA_ROOT=${STOICHEIA_ROOT:?set STOICHEIA_ROOT/STOICHEIA_ROOT (source env.sh first)}
+RUN=$STOICHEIA_DATA/runs/stoicheia_fold_$FOLD
 
-LOG=$(grep -l "DONE (end step" "$GCB_ROOT"/logs/fold${FOLD}-*.out 2>/dev/null | tail -1 || true)
+LOG=$(grep -l "DONE (end step" "$STOICHEIA_ROOT"/logs/fold${FOLD}-*.out 2>/dev/null | tail -1 || true)
 if [ -z "$LOG" ]; then
   echo "fold $FOLD: no DONE marker in logs yet — not finalizing"; exit 1
 fi

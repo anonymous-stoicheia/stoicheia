@@ -8,9 +8,9 @@ from __future__ import annotations
 import collections, glob, json, os, re, sys
 import numpy as np
 
-GCB=os.path.expandvars("$CHARDIFF_DATA")
-INSC=os.path.expandvars("$CHARDIFF_DATA")
-REPO=os.path.expandvars("$CHARDIFF_ROOT")
+GCB=os.path.expandvars("$STOICHEIA_DATA")
+INSC=os.path.expandvars("$STOICHEIA_DATA")
+REPO=os.path.expandvars("$STOICHEIA_ROOT")
 
 def _agg(v): return (np.mean(v), np.std(v), len(v)) if v else (float("nan"), 0.0, 0)
 

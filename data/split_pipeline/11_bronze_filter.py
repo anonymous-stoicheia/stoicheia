@@ -23,7 +23,7 @@ import orjson
 import zstandard as zstd
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$CHARDIFF_DATA"))
+OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$STOICHEIA_DATA"))
 
 
 def filter_fold(k):

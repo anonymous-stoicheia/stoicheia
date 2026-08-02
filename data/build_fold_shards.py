@@ -1,7 +1,7 @@
 """Build per-fold memmap shards from a 10-fold_split fold's train.jsonl.zst.
 
 Same output format/planes as build_shards.py / build_bronze.py so the training loader
-works unchanged when GRC_DATA points at the fold root:
+works unchanged when STOICHEIA_DATA points at the fold root:
 
     <out>/v1_punct/       tier in {pristine, repaired}   (pristine rows first, then
                           repaired — mirrors the flagship's canonical order so the
@@ -15,7 +15,7 @@ of excised-and-restitched train segments) are kept verbatim.
 
 Usage:
     python data/build_fold_shards.py --jsonl .../fold_0/train.jsonl.zst \
-        --out $GCB_DATA/folds/fold_0/shards --workers 16
+        --out $STOICHEIA_DATA/folds/fold_0/shards --workers 16
 """
 from __future__ import annotations
 

@@ -28,7 +28,7 @@ from common import h64, skeleton, sentence_spans, NGRAM
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "work", "doc_clean")
 OUTDIR = os.path.expandvars(os.environ.get("DOC_OUTDIR",
-                        "$CHARDIFF_DATA"))
+                        "$STOICHEIA_DATA"))
 PAPYRI_SOURCES = {"ddbdp", "dclp"}
 INSCR_SYNTH = {"synthetic", "synthetic_2"}
 SAMPLE_EVERY = 25

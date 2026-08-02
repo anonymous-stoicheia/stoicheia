@@ -15,18 +15,18 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # The documentary-clean replica: flagship recipe on the corpus with all papyri
 # (ddbdp/dclp) dropped and every sentence echoing any PHI inscription or papyrus
 # excised (see data_split/pipeline/{04b,05b,06b}*.py). Clean for reconstruction on
 # ANY edited inscription or documentary papyrus. Usage: sbatch scripts/slurm/pretrain_doc_clean.sbatch
 set -euo pipefail
-source $CHARDIFF_ROOT/env.sh
-mkdir -p "$GCB_ROOT/logs"
+source $STOICHEIA_ROOT/env.sh
+mkdir -p "$STOICHEIA_ROOT/logs"
 
-CONFIG=$GCB_ROOT/configs/pretrain/folds/doc_clean.json
-DOC_ROOT=$GCB_DATA/folds/doc_clean
+CONFIG=$STOICHEIA_ROOT/configs/pretrain/folds/doc_clean.json
+DOC_ROOT=$STOICHEIA_DATA/folds/doc_clean
 [ -f "$CONFIG" ] || { echo "missing $CONFIG"; exit 1; }
 [ -f "$DOC_ROOT/shards/v1_punct/index.parquet" ] || { echo "missing shards at $DOC_ROOT"; exit 1; }
 
@@ -36,15 +36,15 @@ NGPU=${SLURM_GPUS_PER_NODE:-4}
 echo "doc_clean nodes=$SLURM_NNODES master=$MASTER gpus/node=$NGPU config=$CONFIG $(date)"
 
 srun --ntasks="$SLURM_NNODES" --ntasks-per-node=1 bash -lc "
-  source $GCB_ROOT/env.sh
-  export GCB_DATA_ROOT=$DOC_ROOT
-  source $GCB_ROOT/scripts/pretrain/stage_shards.sh
-  apptainer exec --nv \$APPTAINER_BINDS \$GCB_STAGE_BIND \$SIF bash -lc '
+  source $STOICHEIA_ROOT/env.sh
+  export STOICHEIA_DATA_ROOT=$DOC_ROOT
+  source $STOICHEIA_ROOT/scripts/pretrain/stage_shards.sh
+  apptainer exec --nv \$APPTAINER_BINDS \$STAGE_BIND \$SIF bash -lc '
     set -e
-    export PYTHONPATH=$GCB_ROOT
+    export PYTHONPATH=$STOICHEIA_ROOT
     export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
     export OMP_NUM_THREADS=16 TOKENIZERS_PARALLELISM=false
-    cd $GCB_ROOT
+    cd $STOICHEIA_ROOT
     torchrun \
       --nnodes=$SLURM_NNODES --nproc_per_node=$NGPU \
       --rdzv_id=$SLURM_JOB_ID --rdzv_backend=c10d \

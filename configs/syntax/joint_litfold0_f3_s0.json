@@ -1,5 +1,5 @@
 {
- "kfold_dir": "$GCB_DATA/treebanks/oga_repo/kfold",
+ "kfold_dir": "$STOICHEIA_DATA/treebanks/oga_repo/kfold",
  "attn": "sdpa",
  "T": 2048,
  "W": 384,
@@ -26,7 +26,7 @@
  "d_rel": 150,
  "w_parse": 1.0,
  "log_every": 10,
- "ckpt": "$GCB_DATA/runs/gcb_fold_0/best.pt",
+ "ckpt": "$STOICHEIA_DATA/runs/stoicheia_fold_0/best.pt",
  "name": "joint_litfold0_f3_s0",
  "seed": 0,
  "fold": 3,

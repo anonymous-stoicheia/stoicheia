@@ -10,7 +10,7 @@ from tagger.conllu import read_conllu
 from tagger.dataset import encode_word
 from tagger.edits import LabelVocab, compute_script, form_key
 
-KFOLD = Path(os.path.expandvars("$GCB_DATA/treebanks/oga_repo/kfold"))
+KFOLD = Path(os.path.expandvars("$STOICHEIA_DATA/treebanks/oga_repo/kfold"))
 fold = sys.argv[1] if len(sys.argv) > 1 else "0"
 
 train = list(read_conllu(KFOLD / f"train{fold}.conllu"))

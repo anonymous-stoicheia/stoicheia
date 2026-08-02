@@ -5,7 +5,7 @@ import os
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$CHARDIFF_DATA"))
+OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$STOICHEIA_DATA"))
 W = os.path.join(ROOT, "work")
 
 
@@ -170,7 +170,7 @@ differing sentences are not treated as leakage. Bronze is machine
 back-translation from Latin; verbatim quotations are caught, free paraphrase
 of content is out of scope by design.
 
-Pipeline: $CHARDIFF_ROOT/pipeline/
+Pipeline: $STOICHEIA_ROOT/pipeline/
 """
 with open(os.path.join(OUTDIR, "README.md"), "w") as f:
     f.write(readme)

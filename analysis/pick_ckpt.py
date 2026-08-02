@@ -10,7 +10,7 @@ what selection is for) and costs no GPU, because every eval's dev CER is in the 
   python3 analysis/pick_ckpt.py --write        # write chosen_ckpt.txt into each run dir
 """
 import glob, json, os, re, sys
-I=os.path.expandvars("$CHARDIFF_DATA/insc_data/runs")
+I=os.path.expandvars("$STOICHEIA_DATA/insc_data/runs")
 write="--write" in sys.argv
 print(f"{'run':<28}{'best.pt cer':>12}{'last.pt cer':>12}  choice")
 for d in sorted(glob.glob(f"{I}/whole_v*")):

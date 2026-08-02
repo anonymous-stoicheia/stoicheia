@@ -22,7 +22,7 @@ import sys
 import unicodedata
 from pathlib import Path
 
-from meter.backbone import ALPHABET  # noqa: F401 (puts GCB_ROOT on sys.path)
+from meter.backbone import ALPHABET  # noqa: F401 (puts STOICHEIA_ROOT on sys.path)
 from meter.dataset import encode_macron_line, encode_scan_line, save_records
 from meter.marks import parse_macron_line, parse_scan_line
 from meter.norma_data import add_norma_source_arg, load_norma

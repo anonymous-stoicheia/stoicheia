@@ -66,7 +66,7 @@ def test_convert_checkpoint_to_hf_meter_kind(tmp_path):
     meter/train.py's exact checkpoint format, run it through the real conversion
     script, and confirm the HF wrapper loads the result with strict=True."""
     import os
-    os.environ["GCB_ROOT"] = str(ROOT)
+    os.environ["STOICHEIA_ROOT"] = str(ROOT)
     sys.path.insert(0, str(ROOT))
     from meter.backbone import CharBertWithHidden
     from meter.model import MeterModel, MeterConfig

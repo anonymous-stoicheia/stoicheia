@@ -18,6 +18,12 @@ from meter.marks import (MAC_LONG, MAC_SHORT, SCAN_HEAVY, SCAN_LIGHT, SCAN_VERSE
 SRC = Path(os.path.expandvars(os.environ.get("MACRONIZER_SRC",
                           "$MACRONIZER_SRC")))
 
+# The four tests below read the released meter-silver tree (MACRONIZER_SRC). Skip them
+# rather than fail when it is not checked out: the rest of this file is pure unit tests.
+needs_src = pytest.mark.skipif(
+    not (SRC / "data").is_dir(),
+    reason="MACRONIZER_SRC not set to a checkout of the meter-silver dataset")
+
 # ---------------------------------------------------------------- old-project reference
 DICHRONA = set("αιυ")
 DIPHTHONGS = {"αι", "αυ", "ει", "ευ", "ηυ", "οι", "ου", "υι", "ωυ"}
@@ -63,6 +69,7 @@ def test_parse_macron_combining_marks():
     assert labels == {1: MAC_LONG, 3: MAC_SHORT}   # β0 α1 ρ2 υ3 ς4
 
 
+@needs_src
 def test_macron_roundtrip_against_plain_column():
     """TSV col1 (plain) and col2 (marked) must strip to identical letter streams."""
     checked = 0
@@ -102,6 +109,7 @@ def _mask_via_planes(text):
     return rec, ambiguous_mask(rec.chars, rec.boundary, rec.dia)
 
 
+@needs_src
 def test_ambiguous_mask_matches_reference():
     lines = []
     for name in ("hypotactic", "oga_1", "anthology", "drama_ia6"):
@@ -146,6 +154,7 @@ def test_parse_scan_simple():
     assert max(labels) == 29
 
 
+@needs_src
 def test_scan_corpus_lines_encode():
     ok = 0
     with open(SRC / "data/scanner/corpus_v3.tsv", encoding="utf-8") as f:
@@ -227,6 +236,7 @@ def test_merge_vowelless_syllables_leaves_real_syllables_alone():
 
 # ---------------------------------------------------------------- norma gold
 
+@needs_src
 def test_norma_lines_parse():
     n_mac = n_syl = 0
     with open(SRC / "data/norma/test.jsonl", encoding="utf-8") as f:

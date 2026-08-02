@@ -13,10 +13,10 @@
 # cluster, so locating the repo via ${BASH_SOURCE[0]} resolves to that spool path, not
 # the real one. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was invoked from,
 # immune to that copy (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Per-fold-digit contamination scan (iphi + papyri, val + test) against the ACTUAL
-# pretraining backbone every restoration fold fine-tunes from (gcb_doc_clean) -- not the
+# pretraining backbone every restoration fold fine-tunes from (stoicheia_doc_clean) -- not the
 # flagship v1_punct/bronze_punct corpus the un-parameterized leak_scan.py defaults point
 # at. All 10 restoration folds share this ONE un-rotated backbone (only the fine-tuning
 # stage rotates by digit), so contamination for fold t{X}v{Y} is whatever of digit X's
@@ -26,17 +26,17 @@ export CHARDIFF_ROOT
 # Usage: sbatch scripts/slurm/insc_leak_scan_fold.sbatch <test_digit>
 set -euo pipefail
 TEST_DIGIT="${1:?usage: sbatch scripts/slurm/insc_leak_scan_fold.sbatch <test_digit>}"
-INS_ROOT=$CHARDIFF_ROOT
+INS_ROOT=$STOICHEIA_ROOT
 
 source "$INS_ROOT/env.sh"
 
-DOC_CLEAN_PLANES="$GCB_DATA/folds/doc_clean/shards/v1_punct/chars.bin,$GCB_DATA/folds/doc_clean/shards/bronze_punct/chars.bin"
+DOC_CLEAN_PLANES="$STOICHEIA_DATA/folds/doc_clean/shards/v1_punct/chars.bin,$STOICHEIA_DATA/folds/doc_clean/shards/bronze_punct/chars.bin"
 
 echo "test_digit=$TEST_DIGIT planes=$DOC_CLEAN_PLANES $(date)"
 
 srun apptainer exec --nv $APPTAINER_BINDS $SIF bash -lc "
     set -e
-    export PYTHONPATH=$GCB_ROOT
+    export PYTHONPATH=$STOICHEIA_ROOT
     export INSC_TEST_DIGIT=$TEST_DIGIT
     cd $INS_ROOT
     python insc/eval/leak_scan.py     --split test --workers 8 --planes $DOC_CLEAN_PLANES --out \$INS_DATA/contaminated_test_fold${TEST_DIGIT}_docclean.json

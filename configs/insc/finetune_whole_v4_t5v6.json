@@ -27,7 +27,7 @@
  "lam": 0.1,
  "meta_condition": true,
  "min_len": 20,
- "torso": "$GCB_DATA/runs/gcb_doc_clean/best.pt",
+ "torso": "$STOICHEIA_DATA/runs/stoicheia_doc_clean/best.pt",
  "mix": {
   "iphi": 1.0,
   "iphi_syn": 0.5,

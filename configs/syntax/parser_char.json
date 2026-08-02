@@ -1,9 +1,9 @@
 {
   "arm": "char",
   "seed": 0,
-  "kfold_dir": "$GCB_DATA/treebanks/oga_repo/kfold",
+  "kfold_dir": "$STOICHEIA_DATA/treebanks/oga_repo/kfold",
   "fold": 0,
-  "tagger_run": "$GCB_DATA/runs/tagger_final_f0_s0",
+  "tagger_run": "$STOICHEIA_DATA/runs/tagger_final_f0_s0",
   "attn": "sdpa",
   "T": 2048,
   "W": 384,

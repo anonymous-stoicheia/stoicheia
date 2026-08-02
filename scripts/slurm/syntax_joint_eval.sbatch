@@ -15,17 +15,17 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 #   sbatch scripts/slurm/syntax_joint_eval.sbatch $SYN_DATA/runs/joint_docclean_f3_s0
 set -euo pipefail
-SYN_ROOT=$CHARDIFF_ROOT
+SYN_ROOT=$STOICHEIA_ROOT
 source "$SYN_ROOT/env.sh"
 RUN="${1:?usage: sbatch scripts/slurm/syntax_joint_eval.sbatch <run_dir> [greedy|mst]}"
 export DECODE="${2:-greedy}"
 srun apptainer exec --nv $APPTAINER_BINDS $SIF bash -lc "
-  export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$GCB_ROOT
-  export CHARDIFF_CKPT=$CHARDIFF_CKPT
+  export PYTHONPATH=$SYN_ROOT:$TAGGER_ROOT:$STOICHEIA_ROOT
+  export STOICHEIA_CKPT=$STOICHEIA_CKPT
   cd $SYN_ROOT
   python -u -m parser.joint_evaluate --run $RUN --split test --decode ${DECODE:-greedy}
 "

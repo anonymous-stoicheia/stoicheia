@@ -1,8 +1,8 @@
 {
   "name": "meter_mac_v2_randinit_s3",
   "seed": 3,
-  "ckpt": "random:$GCB_DATA/runs/greekcharbert_anneal_staged/best.pt",
-  "out_dir": "$GCB_DATA/runs/meter_mac_v2_randinit_s3",
+  "ckpt": "random:$STOICHEIA_DATA/runs/stoicheia_pretrain_staged/best.pt",
+  "out_dir": "$STOICHEIA_DATA/runs/meter_mac_v2_randinit_s3",
   "encoded": "$METER_DATA/encoded",
   "attn": "sdpa",
   "T": 2048,

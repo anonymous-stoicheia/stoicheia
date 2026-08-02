@@ -18,8 +18,8 @@ sys.path.insert(1, str(Path(__file__).resolve().parents[1] / "data"))
 from papyri import load as load_iphi
 
 PLANES = [
-    os.path.expandvars("$GCB_DATA/shards/v1_punct/chars.bin"),
-    os.path.expandvars("$GCB_DATA/shards/bronze_punct/chars.bin"),
+    os.path.expandvars("$STOICHEIA_DATA/shards/v1_punct/chars.bin"),
+    os.path.expandvars("$STOICHEIA_DATA/shards/bronze_punct/chars.bin"),
 ]
 _corpora = None
 

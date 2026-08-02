@@ -1,6 +1,6 @@
 """Tag raw polytonic Greek text end-to-end.
 
-  python -m tagger.tag --run $GCB_DATA/runs/tagger_fold0_pilot --text "..." [--tsv out.tsv]
+  python -m tagger.tag --run $STOICHEIA_DATA/runs/tagger_fold0_pilot --text "..." [--tsv out.tsv]
   echo "..." | python -m tagger.tag --run ...
 
 Tokenization is the pretraining normalizer's (whitespace/punctuation): crasis and

@@ -1,7 +1,7 @@
 {
   "name": "meter_smoke",
   "seed": 0,
-  "ckpt": "$GCB_DATA/runs/greekcharbert_anneal_staged/best.pt",
+  "ckpt": "$STOICHEIA_DATA/runs/stoicheia_pretrain_staged/best.pt",
   "out_dir": "$METER_DATA/runs/meter_smoke",
   "encoded": "$METER_DATA/encoded",
   "attn": "sdpa",

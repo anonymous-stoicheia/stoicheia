@@ -3,7 +3,7 @@ Usage: python scripts/summarize.py [runs_glob_prefix]  (default tagger_final_)""
 import glob, json, os, statistics, sys
 
 prefix = sys.argv[1] if len(sys.argv) > 1 else "tagger_final_"
-runs_dir = os.path.expandvars("$GCB_DATA/runs")
+runs_dir = os.path.expandvars("$STOICHEIA_DATA/runs")
 rows = []
 for d in sorted(glob.glob(f"{runs_dir}/{prefix}*")):
     sf = os.path.join(d, "scores.jsonl")

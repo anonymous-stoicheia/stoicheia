@@ -3,10 +3,10 @@ HF-Hub-ready model repo (config.json + model.safetensors + modeling/configuratio
 processing .py files + model card), dropping optimizer state and training-only config.
 
   python convert_checkpoint_to_hf.py --kind backbone \
-      --ckpt $GCB_DATA/runs/gcb_doc_clean/best.pt \
+      --ckpt $STOICHEIA_DATA/runs/stoicheia_doc_clean/best.pt \
       --out hf_release/Stoicheia-doc_clean \
       --name "Stoicheia (documentary-clean)" \
-      --metrics-json $GCB_DATA/runs/gcb_doc_clean/eval.jsonl
+      --metrics-json $STOICHEIA_DATA/runs/stoicheia_doc_clean/eval.jsonl
 
   python convert_checkpoint_to_hf.py --kind tagger_parser \
       --ckpt $SYN_DATA/runs/joint_docclean_f3_s0/best.pt \

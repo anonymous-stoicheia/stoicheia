@@ -10,7 +10,12 @@ from tagger.dataset import TaggerDataset, batch_rows, encode_sentence, encode_wo
 from tagger.edits import LabelVocab, form_key
 
 KFOLD = Path(os.path.expandvars(os.environ.get("TAGGER_KFOLD",
-             "$CHARDIFF_DATA/treebanks/oga_repo/kfold")))
+             "$STOICHEIA_DATA/treebanks/oga_repo/kfold")))
+
+
+pytestmark = pytest.mark.skipif(
+    not (KFOLD / "dev0.conllu").is_file(),
+    reason="TAGGER_KFOLD not set to a checkout of the OGA treebank k-fold split")
 
 
 @pytest.fixture(scope="module")

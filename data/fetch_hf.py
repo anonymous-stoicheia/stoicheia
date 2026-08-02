@@ -4,7 +4,7 @@ Everything the shards are built from comes through here, so a rebuild from a cle
 checkout + this script reproduces the corpus byte-for-byte (provenance.json pins the
 dataset commit SHAs that were actually downloaded).
 
-  python data/fetch_hf.py --out $GCB_DATA/raw [--revision-gold SHA] [--revision-bronze SHA]
+  python data/fetch_hf.py --out $STOICHEIA_DATA/raw [--revision-gold SHA] [--revision-bronze SHA]
 """
 from __future__ import annotations
 

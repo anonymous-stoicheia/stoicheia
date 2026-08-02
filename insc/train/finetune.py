@@ -1,7 +1,7 @@
 """Fine-tune the Stoicheia torso on I.PHI inscriptions (diffusion objective, Ithaca-
 oriented masking: contiguous spans of 1-10 chars dominate). Config-driven, DDP/torchrun.
 
-Reuses Stoicheia modules wholesale (PYTHONPATH=$GCB_ROOT); this file only changes:
+Reuses Stoicheia modules wholesale (PYTHONPATH=$STOICHEIA_ROOT); this file only changes:
   - init from $INS_TORSO (weights only; fresh optimizer, fresh short schedule)
   - data mix: iphi shards + gold/silver replay (anti-forgetting)
   - noise mix: span-heavy, span lengths matched to the Ithaca eval (1-10)
@@ -128,7 +128,7 @@ def main():
                        span_mean=nc.get("span_mean", 4.0), span_max=nc.get("span_max", 12))
 
     ins = os.path.expandvars(cfg["iphi_shards"])
-    gcb = os.path.expandvars(cfg["gcb_shards"])
+    gcb = os.path.expandvars(cfg["shards"])
     mix = cfg.get("mix", {"iphi": 1.0, "iphi_syn": 0.5, "gold": 0.15, "silver": 0.15})
     dcfg = DataConfig(tiers={
         "iphi":     TierSpec(ins, mix.get("iphi", 1.0), tier_filter="iphi"),

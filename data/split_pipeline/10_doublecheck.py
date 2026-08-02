@@ -28,14 +28,14 @@ import zstandard as zstd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$CHARDIFF_DATA"))
+OUTDIR = os.path.expandvars(os.environ.get("FOLD_OUTDIR", "$STOICHEIA_DATA"))
 
 spec = importlib.util.spec_from_file_location("verify", os.path.join(HERE, "07_verify.py"))
 verify = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verify)
 
-DDBDP_JSONL = os.path.expandvars("$CHARDIFF_DATA/clean/ddbdp.jsonl")
-PAPYRI_TM_JSONL = os.path.expandvars("$CHARDIFF_DATA/data/papyri_clean.jsonl")
+DDBDP_JSONL = os.path.expandvars("$STOICHEIA_DATA/clean/ddbdp.jsonl")
+PAPYRI_TM_JSONL = os.path.expandvars("$STOICHEIA_DATA/data/papyri_clean.jsonl")
 
 
 def read_zst(path):

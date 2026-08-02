@@ -13,7 +13,7 @@ Output record set = pristine + repaired + bronze, where:
     (this corpus is fold-free; it is held out only against documentary text)
 
 Output: <DOC_OUTDIR>/train.jsonl.zst  (records {id, tier, source, text})
-Default DOC_OUTDIR: $CHARDIFF_DATA
+Default DOC_OUTDIR: $STOICHEIA_DATA
 """
 import glob
 import json
@@ -32,7 +32,7 @@ from common import MIN_SEG_CHARS
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "work", "doc_clean")
 OUTDIR = os.path.expandvars(os.environ.get("DOC_OUTDIR",
-                        "$CHARDIFF_DATA"))
+                        "$STOICHEIA_DATA"))
 PAPYRI_SOURCES = {"ddbdp", "dclp"}
 
 

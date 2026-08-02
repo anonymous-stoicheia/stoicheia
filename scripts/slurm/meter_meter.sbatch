@@ -15,14 +15,14 @@
 # repeatedly in practice. $SLURM_SUBMIT_DIR is set by sbatch to the directory it was
 # invoked from, immune to that copy, and matches this repo's own submit-from-root
 # convention (see scripts/slurm/README.md point 6).
-CHARDIFF_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
-export CHARDIFF_ROOT
+STOICHEIA_ROOT="${SLURM_SUBMIT_DIR:-$PWD}"
+export STOICHEIA_ROOT
 # Usage: sbatch scripts/slurm/meter_meter.sbatch configs/meter/joint_pilot.json [--ckpt PATH]
 set -euo pipefail
 CONFIG="${1:?usage: sbatch scripts/meter.sbatch <config.json> [extra args]}"
 shift || true
 EXTRA="$*"
-METER_ROOT=$CHARDIFF_ROOT
+METER_ROOT=$STOICHEIA_ROOT
 source $METER_ROOT/env.sh
 mkdir -p "$METER_ROOT/logs"
 NGPU=${SLURM_GPUS_PER_NODE:-4}
@@ -31,8 +31,8 @@ echo "gpus=$NGPU config=$CONFIG extra='$EXTRA' $(date)"
 
 apptainer exec --nv $APPTAINER_BINDS $SIF bash -lc "
   set -e
-  export PYTHONPATH=$METER_ROOT:$GCB_ROOT
-  export METER_DATA=$METER_DATA GCB_DATA=$GCB_DATA
+  export PYTHONPATH=$METER_ROOT:$STOICHEIA_ROOT
+  export METER_DATA=$METER_DATA STOICHEIA_DATA=$STOICHEIA_DATA
   export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
   export OMP_NUM_THREADS=16
   cd $METER_ROOT
