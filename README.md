@@ -9,11 +9,11 @@ macronization/metrical scansion.
 This repository is the training/evaluation code. The pretrained and fine-tuned model
 weights are on the HuggingFace Hub — see [`MODEL_CARDS_INDEX.md`](MODEL_CARDS_INDEX.md)
 for the full list, or jump straight to
-[`ANON-ORG/Stoicheia-doc_clean`](https://huggingface.co/ANON-ORG/Stoicheia-doc_clean)
+[`anonymous-stoicheia/Stoicheia-doc_clean`](https://huggingface.co/anonymous-stoicheia/Stoicheia-doc_clean)
 (the flagship backbone) or
-[`ANON-ORG/Stoicheia-restoration-test3`](https://huggingface.co/ANON-ORG/Stoicheia-restoration-test3) (or any of the ten digit-rotation checkpoints) /
-[`-tagger-parser`](https://huggingface.co/ANON-ORG/Stoicheia-tagger-parser) for a
-ready-to-use downstream model (or [`-meter`](https://huggingface.co/ANON-ORG/Stoicheia-meter) for
+[`anonymous-stoicheia/Stoicheia-restoration-test3`](https://huggingface.co/anonymous-stoicheia/Stoicheia-restoration-test3) (or any of the ten digit-rotation checkpoints) /
+[`-tagger-parser`](https://huggingface.co/anonymous-stoicheia/Stoicheia-tagger-parser) for a
+ready-to-use downstream model (or [`-meter`](https://huggingface.co/anonymous-stoicheia/Stoicheia-meter) for
 macronization and scansion). All model repos are currently **private**; they will be
 made public alongside publication.
 
@@ -23,7 +23,7 @@ made public alongside publication.
 import torch
 from transformers import AutoModel
 
-model = AutoModel.from_pretrained("ANON-ORG/Stoicheia-doc_clean", trust_remote_code=True)
+model = AutoModel.from_pretrained("anonymous-stoicheia/Stoicheia-doc_clean", trust_remote_code=True)
 
 from processing_char_bert import CharBertProcessor  # ships in the model repo
 processor = CharBertProcessor()

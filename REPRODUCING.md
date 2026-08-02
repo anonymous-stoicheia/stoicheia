@@ -3,7 +3,7 @@
 ## 1. Environment
 
 ```bash
-git clone https://github.com/ANON-ORG/stoicheia
+git clone https://github.com/anonymous-stoicheia/stoicheia
 cd stoicheia
 export STOICHEIA_DATA=/path/to/a/writable/data+checkpoints/directory
 source env.sh
@@ -25,9 +25,9 @@ Three core datasets are already public and used as-is (no re-release needed):
 
 ```python
 from datasets import load_dataset
-gold_silver = load_dataset("ANON-ORG/AncientGreek")                         # pretraining corpus
-bronze = load_dataset("ANON-ORG/SyntheticAncientGreek-CorpusCorporum")      # synthetic augmentation
-inscriptions = load_dataset("ANON-ORG/Inscriptions_2")                     # PHI inscriptions
+gold_silver = load_dataset("anonymous-stoicheia/AncientGreek")                         # pretraining corpus
+bronze = load_dataset("anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum")      # synthetic augmentation
+inscriptions = load_dataset("anonymous-stoicheia/Inscriptions_2")                     # PHI inscriptions
 ```
 
 Two further data dependencies are external, citable resources — clone/download them
@@ -41,7 +41,7 @@ directly rather than expecting a copy in this repo:
 One dataset is newly released with this paper (a silver lemma warmup corpus for the
 tagger):
 ```python
-silver_lemma = load_dataset("ANON-ORG/Stoicheia-silver-lemma")
+silver_lemma = load_dataset("anonymous-stoicheia/Stoicheia-silver-lemma")
 ```
 
 The 10-fold decontamination split is built by the pipeline in `data/split_pipeline/`
@@ -199,8 +199,8 @@ superseded before evaluation and are not part of the release).
 ## External pieces the harnesses expect
 
 * Meter training data: `MACRONIZER_SRC` must point at a checkout of the
-  `ANON-ORG/Stoicheia-meter-silver` dataset (silver verse lines + scanner corpus);
-  the Norma benchmark itself comes from `ANON-ORG/norma`.
+  `anonymous-stoicheia/Stoicheia-meter-silver` dataset (silver verse lines + scanner corpus);
+  the Norma benchmark itself comes from `anonymous-stoicheia/norma`.
 * The Ithaca baseline harness (`insc/eval/ithaca_baseline.py`) expects DeepMind's
   Ithaca repository cloned at `ithaca_upstream/` and its released checkpoint;
   the Aeneas harness (`insc/eval/ptp_baseline.py`) expects DeepMind's

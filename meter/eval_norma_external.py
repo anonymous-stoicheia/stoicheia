@@ -7,8 +7,8 @@ vowel-length (macron) annotation of the three "dichrona" (ambiguous-length)
 letters alpha, iota and upsilon.
 
 The benchmark is loaded from HuggingFace by default
-(https://huggingface.co/datasets/ANON-ORG/norma, source="hf"), or from a
-local git clone of https://github.com/ANON-ORG/norma
+(https://huggingface.co/datasets/anonymous-stoicheia/norma, source="hf"), or from a
+local git clone of https://github.com/anonymous-stoicheia/norma
 (source="git"). These are NOT the same benchmark: the HF version
 deliberately excludes two works (insolem, pindar) that also appear in a
 separate training corpus, to avoid train/test contamination -- so scores
@@ -106,7 +106,7 @@ GIT_NORMA_ROOT = os.environ.get(
 # separate training corpus, to avoid train/test contamination. Numbers
 # from source="hf" and source="git" are therefore NOT directly comparable
 # (different work counts) -- pick one source and stick with it.
-DEFAULT_NORMA_HF_REPO = "ANON-ORG/norma"
+DEFAULT_NORMA_HF_REPO = "anonymous-stoicheia/norma"
 
 
 def resolve_norma_dirs(source: str = "hf", repo_id: str = DEFAULT_NORMA_HF_REPO,
@@ -312,7 +312,7 @@ def load_corpus(source: str = "hf", repo_id: str = DEFAULT_NORMA_HF_REPO,
     """Parses every work in the benchmark into a list of LineRecord.
 
     source : "hf" (default) downloads/caches the benchmark from the
-        HuggingFace dataset repo `repo_id` (ANON-ORG/norma). "git" reads a
+        HuggingFace dataset repo `repo_id` (anonymous-stoicheia/norma). "git" reads a
         local clone instead (NORMA_ROOT env var, or a norma-syllabarum-graecarum
         sibling directory of this script). `norma_root`, if given, overrides
         either source and is used directly.

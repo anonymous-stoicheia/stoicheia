@@ -2,7 +2,7 @@
 
 Two sources:
   hf  (default) -- the canonical, actively-maintained release at
-      https://huggingface.co/datasets/ANON-ORG/norma. This now supersedes the old
+      https://huggingface.co/datasets/anonymous-stoicheia/norma. This now supersedes the old
       git-based copy: at time of writing it has 1378 macronize rows (614 test +
       764 dev) vs the git copy's 932 (both dev and test folded into one file,
       disambiguated by split_manifest.json), plus the same 614 syllabify test rows.
@@ -20,7 +20,7 @@ import json
 import os
 from pathlib import Path
 
-HF_REPO = "ANON-ORG/norma"
+HF_REPO = "anonymous-stoicheia/norma"
 
 
 def _load_git(src: Path) -> dict:

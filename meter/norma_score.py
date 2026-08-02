@@ -17,7 +17,7 @@ Usage:
   python -m meter.norma_score --gold test.jsonl --pred pred.jsonl [--task macronize|syllabify|both]
 
 `gold` is Norma's own format: one {"text", "source", "task"} object per line
-(see https://huggingface.co/datasets/ANON-ORG/norma). `pred` must have the same
+(see https://huggingface.co/datasets/anonymous-stoicheia/norma). `pred` must have the same
 number of lines in the same order, each a plain annotated string (macronize:
 "_"/"^" after long/short letters; syllabify: "[heavy]"/"{light}" spans) -- or a
 {"text": "..."} object with the same content under "text".

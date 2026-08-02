@@ -13,8 +13,8 @@ from pathlib import Path
 
 from huggingface_hub import HfApi, snapshot_download
 
-GOLD_REPO = "ANON-ORG/AncientGreek"                              # pristine + repaired parquet
-BRONZE_REPO = "ANON-ORG/SyntheticAncientGreek-CorpusCorporum"    # bronze.jsonl (synthetic)
+GOLD_REPO = "anonymous-stoicheia/AncientGreek"                              # pristine + repaired parquet
+BRONZE_REPO = "anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum"    # bronze.jsonl (synthetic)
 
 
 def fetch(repo_id, dest, revision=None):

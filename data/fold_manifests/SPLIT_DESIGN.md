@@ -1,9 +1,9 @@
 # 10-fold leakage-proof split of the Ancient Greek corpora
 
 Built from:
-- `ANON-ORG/AncientGreek` (pristine + repaired tiers)
-- `ANON-ORG/SyntheticAncientGreek-CorpusCorporum` (bronze)
-- `ANON-ORG/Inscriptions_2` (PHI inscriptions + GPT-4o synthetic variants)
+- `anonymous-stoicheia/AncientGreek` (pristine + repaired tiers)
+- `anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum` (bronze)
+- `anonymous-stoicheia/Inscriptions_2` (PHI inscriptions + GPT-4o synthetic variants)
 
 ## Layout
 `fold_k/{train,val,test}.jsonl.zst` for k = 0..9.

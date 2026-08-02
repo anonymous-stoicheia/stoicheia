@@ -13,8 +13,8 @@ never seen it during pretraining.
 
 | model | decontamination |
 |---|---|
-| [`ANON-ORG/Stoicheia-doc_clean`](https://huggingface.co/ANON-ORG/Stoicheia-doc_clean) | zero documentary (inscription/papyrus) exposure of any kind |
-| [`ANON-ORG/Stoicheia-fold-0`](https://huggingface.co/ANON-ORG/Stoicheia-fold-0) … [`fold-9`](https://huggingface.co/ANON-ORG/Stoicheia-fold-9) | rotated 80/10/10 literary split, fold *k*'s test set unseen by fold *k*'s model |
+| [`anonymous-stoicheia/Stoicheia-doc_clean`](https://huggingface.co/anonymous-stoicheia/Stoicheia-doc_clean) | zero documentary (inscription/papyrus) exposure of any kind |
+| [`anonymous-stoicheia/Stoicheia-fold-0`](https://huggingface.co/anonymous-stoicheia/Stoicheia-fold-0) … [`fold-9`](https://huggingface.co/anonymous-stoicheia/Stoicheia-fold-9) | rotated 80/10/10 literary split, fold *k*'s test set unseen by fold *k*'s model |
 
 ## Fine-tuned downstream models (4)
 
@@ -22,10 +22,10 @@ All built on `Stoicheia-doc_clean`.
 
 | model | task |
 |---|---|
-| [`ANON-ORG/Stoicheia-restoration-test0`](https://huggingface.co/ANON-ORG/Stoicheia-restoration-test0) … [`-test9`](https://huggingface.co/ANON-ORG/Stoicheia-restoration-test9) | documentary restoration, ten checkpoints — checkpoint *k* holds out every PHI/TM identifier ending in digit *k*, so every document in the corpus has a model that provably never saw it |
-| [`ANON-ORG/Stoicheia-tagger-parser`](https://huggingface.co/ANON-ORG/Stoicheia-tagger-parser) | morphosyntactic tagging (XPOS/UPOS/lemma) + dependency parsing |
-| [`ANON-ORG/Stoicheia-meter`](https://huggingface.co/ANON-ORG/Stoicheia-meter) | macronization (vowel length) + metrical scansion, trained jointly |
-| [`ANON-ORG/Stoicheia-macronizer`](https://huggingface.co/ANON-ORG/Stoicheia-macronizer) | macronization only — the arm the paper's macronization ablation is measured on |
+| [`anonymous-stoicheia/Stoicheia-restoration-test0`](https://huggingface.co/anonymous-stoicheia/Stoicheia-restoration-test0) … [`-test9`](https://huggingface.co/anonymous-stoicheia/Stoicheia-restoration-test9) | documentary restoration, ten checkpoints — checkpoint *k* holds out every PHI/TM identifier ending in digit *k*, so every document in the corpus has a model that provably never saw it |
+| [`anonymous-stoicheia/Stoicheia-tagger-parser`](https://huggingface.co/anonymous-stoicheia/Stoicheia-tagger-parser) | morphosyntactic tagging (XPOS/UPOS/lemma) + dependency parsing |
+| [`anonymous-stoicheia/Stoicheia-meter`](https://huggingface.co/anonymous-stoicheia/Stoicheia-meter) | macronization (vowel length) + metrical scansion, trained jointly |
+| [`anonymous-stoicheia/Stoicheia-macronizer`](https://huggingface.co/anonymous-stoicheia/Stoicheia-macronizer) | macronization only — the arm the paper's macronization ablation is measured on |
 
 Not released as a model: the authorship-attribution / hermeneutic probes, which are
 designed to be fine-tuned per-task rather than distributed as a general-purpose model
@@ -35,10 +35,10 @@ designed to be fine-tuned per-task rather than distributed as a general-purpose 
 
 | dataset | what it is |
 |---|---|
-| [`ANON-ORG/AncientGreek`](https://huggingface.co/datasets/ANON-ORG/AncientGreek) | main pretraining corpus (gold + silver tiers) |
-| [`ANON-ORG/SyntheticAncientGreek-CorpusCorporum`](https://huggingface.co/datasets/ANON-ORG/SyntheticAncientGreek-CorpusCorporum) | bronze synthetic augmentation tier |
-| [`ANON-ORG/Inscriptions_2`](https://huggingface.co/datasets/ANON-ORG/Inscriptions_2) | PHI inscriptions used for the 10-fold split and restoration fine-tuning |
-| [`ANON-ORG/Stoicheia-silver-lemma`](https://huggingface.co/datasets/ANON-ORG/Stoicheia-silver-lemma) | silver lemma-warmup data for the tagger (new with this release) |
+| [`anonymous-stoicheia/AncientGreek`](https://huggingface.co/datasets/anonymous-stoicheia/AncientGreek) | main pretraining corpus (gold + silver tiers) |
+| [`anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum`](https://huggingface.co/datasets/anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum) | bronze synthetic augmentation tier |
+| [`anonymous-stoicheia/Inscriptions_2`](https://huggingface.co/datasets/anonymous-stoicheia/Inscriptions_2) | PHI inscriptions used for the 10-fold split and restoration fine-tuning |
+| [`anonymous-stoicheia/Stoicheia-silver-lemma`](https://huggingface.co/datasets/anonymous-stoicheia/Stoicheia-silver-lemma) | silver lemma-warmup data for the tagger (new with this release) |
 
 Not re-released (already public elsewhere, cited not duplicated): the *Norma*
 macronization/scansion benchmark (GitHub), the OGA/AGDT treebank

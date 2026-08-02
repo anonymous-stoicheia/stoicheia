@@ -1,6 +1,6 @@
 """I.PHI (Ithaca inscriptions) loader — segments, splits, planes.
 
-Reads raw/iphi.jsonl (ANON-ORG/Inscriptions_2). Split rule (matches Ithaca):
+Reads raw/iphi.jsonl (anonymous-stoicheia/Inscriptions_2). Split rule (matches Ithaca):
 PHI_ID last digit 3 -> test, 4 -> val, else train.
 
 Improvement over the grc-encoder pilot loader: inscriptions contain runs of '-' marking
