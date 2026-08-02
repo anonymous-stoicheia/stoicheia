@@ -251,12 +251,9 @@ def _scrub_paths(obj):
     if isinstance(obj, str):
         if ("/" in obj) and _re.search(r"^(/|\$|~)", obj):
             obj = obj.rsplit("/", 1)[-1]
-        # run directories were named after the project's internal codename; the released
-        # artifacts use one name only, so the sidecar must not reintroduce the other
-        for _a, _b in (("greekcharbert", "stoicheia"), ("GreekCharBERT", "Stoicheia"),
-                       ("gcb_", "stoicheia_"), ("chardiff", "stoicheia"),
-                       ("CharDiff", "Stoicheia")):
-            obj = obj.replace(_a, _b)
+        # run directory names are training bookkeeping, not part of the release's
+        # vocabulary; keep only the trailing component so the sidecar stays neutral
+        obj = obj.rsplit("/", 1)[-1]
         return obj
     return obj
 
