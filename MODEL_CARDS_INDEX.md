@@ -27,18 +27,17 @@ All built on `Stoicheia-doc_clean`.
 | [`anonymous-stoicheia/Stoicheia-meter`](https://huggingface.co/anonymous-stoicheia/Stoicheia-meter) | macronization (vowel length) + metrical scansion, trained jointly |
 | [`anonymous-stoicheia/Stoicheia-macronizer`](https://huggingface.co/anonymous-stoicheia/Stoicheia-macronizer) | macronization only — the arm the paper's macronization ablation is measured on |
 
-Not released as a model: the authorship-attribution / hermeneutic probes, which are
-designed to be fine-tuned per-task rather than distributed as a general-purpose model
-(see the paper's Discussion section).
-
 ## Datasets
 
 | dataset | what it is |
 |---|---|
-| [`anonymous-stoicheia/AncientGreek`](https://huggingface.co/datasets/anonymous-stoicheia/AncientGreek) | main pretraining corpus (gold + silver tiers) |
-| [`anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum`](https://huggingface.co/datasets/anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum) | bronze synthetic augmentation tier |
+| [`anonymous-stoicheia/AncientGreek`](https://huggingface.co/datasets/anonymous-stoicheia/AncientGreek) | pretraining corpus, ~361M words in `pristine` and `repaired` tiers |
+| [`anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum`](https://huggingface.co/datasets/anonymous-stoicheia/SyntheticAncientGreek-CorpusCorporum) | bronze synthetic augmentation tier, machine-translated from Latin |
 | [`anonymous-stoicheia/Inscriptions_2`](https://huggingface.co/datasets/anonymous-stoicheia/Inscriptions_2) | PHI inscriptions used for the 10-fold split and restoration fine-tuning |
+| [`anonymous-stoicheia/Stoicheia-meter-silver`](https://huggingface.co/datasets/anonymous-stoicheia/Stoicheia-meter-silver) | silver macronization/scansion training data (Hypotactic-derived + constraint-solver mined) |
+| [`anonymous-stoicheia/norma`](https://huggingface.co/datasets/anonymous-stoicheia/norma) | mirror of the *Norma Syllabarum Graecarum* benchmark, in the exact split the paper evaluates on |
 
-Not re-released (already public elsewhere, cited not duplicated): the *Norma*
-macronization/scansion benchmark (GitHub), the OGA/AGDT treebank
-(Celano's own repository).
+`AncientGreek` omits the Database of Byzantine Book Epigrams, which is CC BY-NC-SA and so
+cannot travel inside a CC BY-SA compilation; `scripts/fetch_dbbe.py` refetches it under its
+own terms. Not re-released at all: the OGA/AGDT treebank splits, which come from Celano's
+own repository and are cited rather than duplicated.

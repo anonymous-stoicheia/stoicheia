@@ -75,6 +75,10 @@ decides where the words end.
 - `meter/` — macronization (vowel length) and metrical scansion, including the
   *Norma* benchmark protocol and rule-based silver-data mining pipeline.
 - `tests/` — CPU-only pytest suite.
+- `scripts/fetch_dbbe.py` — refetches the Database of Byzantine Book Epigrams, which the
+  released corpus omits: DBBE is CC BY-NC-SA, whose non-commercial clause a CC BY-SA
+  compilation cannot carry. Run it to reconstruct the pretraining corpus exactly (5,476
+  records, ~0.2M words, 0.1% of the total); what you build then inherits DBBE's terms.
 
 See [`REPRODUCING.md`](REPRODUCING.md) for the full environment setup and end-to-end
 reproduction walkthrough.
